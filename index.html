@@ -64,7 +64,6 @@
     input[readonly]{background:#f2f7fc;color:#2b4c65}
     .divider{height:2px;background:var(--line);margin:14px 0}
 
-    /* Tabela responsiva */
     .table-wrap{
       width:100%;
       overflow-x:auto;
@@ -106,25 +105,15 @@
       padding-left:14px;
       white-space:nowrap;
     }
-    tbody td:last-child{border-right:0}
-
-    /* ✅ DIMINUIR "QUANT." (o input) */
     .qty{
-      width:78px;              /* antes 110px */
-      max-width:78px;
+      width:78px;
       margin:auto;
       text-align:center;
-      padding:8px 6px;         /* menor */
+      padding:8px 6px;
       border:2px solid var(--line);
       border-radius:10px;
-      font-size:15px;          /* menor */
+      font-size:15px;
     }
-    /* deixa os botões de setinha (no celular) menores quando existir */
-    input.qty::-webkit-outer-spin-button,
-    input.qty::-webkit-inner-spin-button{
-      margin-left:6px;
-    }
-
     .money{font-weight:800;font-size:18px;white-space:nowrap}
 
     .total-row{
@@ -156,11 +145,11 @@
       cursor:pointer;
       margin-top:16px;
     }
-    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .btn:disabled{opacity:.6; cursor:not-allowed; filter: grayscale(1);}
 
     .msg{margin-top:12px;padding:12px;border-radius:10px;display:none;font-weight:700}
-    .ok{background:#e7f7ea;border:1px solid #bde5c5}
-    .err{background:#fde8e8;border:1px solid #f5b5b5}
+    .ok{background:#e7f7ea;border:1px solid #bde5c5; color: #1e4627;}
+    .err{background:#fde8e8;border:1px solid #f5b5b5; color: #611a1a;}
 
     .login{
       margin-bottom:12px;
@@ -174,24 +163,15 @@
 
     .sent{display:none;padding:16px}
     .sent h2{margin:4px 0 10px;color:var(--blue2);font-size:22px}
-    .sent textarea{min-height:200px;white-space:pre-wrap}
+    .sent textarea{width:100%; min-height:200px; padding:10px; border-radius:10px; border:2px solid var(--line); font-family: monospace;}
     .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-    .btn2{
-      padding:14px 12px;border-radius:12px;border:none;font-weight:900;font-size:16px;cursor:pointer
-    }
+    .btn2{padding:14px 12px;border-radius:12px;border:none;font-weight:900;font-size:16px;cursor:pointer}
     .btn-dark{background:#1f2d3a;color:#fff}
     .btn-blue{background:var(--blue);color:#fff}
 
     @media (max-width: 720px){
-      body{padding:12px 8px}
-      .card-header h1{font-size:22px}
       .grid-2{grid-template-columns: 1fr;}
-      /* ✅ no mobile a quantidade fica ainda menor */
-      .qty{width:64px; max-width:64px; padding:7px 6px; font-size:14px;}
-      .total-row{font-size:18px}
-      .total-row span{font-size:18px}
-      .btn{font-size:18px}
-      tbody tr td:first-child{font-size:18px}
+      .qty{width:64px;}
       .btn-row{grid-template-columns:1fr;}
     }
   </style>
@@ -199,11 +179,8 @@
 
 <body>
   <div class="wrap">
-
-    <!-- LOGIN -->
     <div class="login" id="loginBox">
       <h3>Acesso do Encarregado</h3>
-
       <div class="grid-2">
         <div>
           <label>Usuário (Matrícula)</label>
@@ -214,366 +191,189 @@
           <input id="loginPin" type="password" inputmode="numeric" placeholder="••••••">
         </div>
       </div>
-
       <button class="btn" id="btnEntrar" type="button" style="margin-top:14px">Entrar</button>
-
       <div id="loginEr" class="msg err"></div>
-      <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado, CR e Fornecedor.</div>
     </div>
 
-    <!-- FORM -->
     <div class="card" id="formCard" style="display:none">
-      <div class="card-header">
-        <h1>REQUISIÇÃO DE ALIMENTAÇÃO</h1>
-      </div>
-
+      <div class="card-header"><h1>REQUISIÇÃO DE ALIMENTAÇÃO</h1></div>
       <form id="f" class="section">
         <div class="grid-2">
-          <div>
-            <label>Data *</label>
-            <input type="date" name="data" required>
-          </div>
-
-          <div>
-            <label>Encarregado</label>
-            <input type="text" id="funcionario" readonly>
-          </div>
-
+          <div><label>Data *</label><input type="date" name="data" id="data_input" required></div>
+          <div><label>Encarregado</label><input type="text" id="funcionario" readonly></div>
           <div>
             <label>Fazenda *</label>
             <select name="fazenda" required>
               <option value="" selected disabled>Selecione...</option>
-              <option>SANTA LUCIA ||</option>
-              <option>TANGARA</option>
-              <option>SANTÍSSIMA TRINDADE</option>
-              <option>NOSSA SENHORA APARECIDA</option>
-              <option>TANGARÁ II</option>
-              <option>ÁGUA AMARELA</option>
-              <option>SÃO FRANCISCO</option>
-              <option>RONCA</option>
-              <option>SÃO SALVADOR I</option>
-              <option>SÃO MARTINHO</option>
-              <option>SANTA MARIA</option>
-              <option>SANTA LUCIA</option>
-              <option>NOVO CERRADO</option>
-              <option>SÃO SALVADOR II</option>
-              <option>ESTIVA</option>
-              <option>NOVA ERA</option>
-              <option>BREJO GRANDE</option>
-              <option>3R</option>
+              <option>SANTA LUCIA ||</option><option>TANGARA</option><option>SANTÍSSIMA TRINDADE</option>
+              <option>NOSSA SENHORA APARECIDA</option><option>TANGARÁ II</option><option>ÁGUA AMARELA</option>
+              <option>SÃO FRANCISCO</option><option>RONCA</option><option>SÃO SALVADOR I</option>
+              <option>SÃO MARTINHO</option><option>SANTA MARIA</option><option>SANTA LUCIA</option>
+              <option>NOVO CERRADO</option><option>SÃO SALVADOR II</option><option>ESTIVA</option>
+              <option>NOVA ERA</option><option>BREJO GRANDE</option><option>3R</option>
             </select>
           </div>
-
-          <div>
-            <label>CR</label>
-            <input type="text" id="cr" readonly>
-          </div>
+          <div><label>CR</label><input type="text" id="cr" readonly></div>
         </div>
-
         <div class="divider"></div>
-
         <label>Solicitamos do Fornecedor</label>
         <input type="text" id="fornecedor" readonly>
-
         <div style="margin-top:12px">
           <label>Entregar ao Portador *</label>
           <input type="text" name="portador" required>
         </div>
-
         <div class="divider"></div>
-
         <div class="table-wrap">
           <table>
-            <thead>
-              <tr>
-                <th>Discriminação</th>
-                <th>Quant.</th>
-                <th>V. Unitário</th>
-                <th>Total</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Discriminação</th><th>Quant.</th><th>V. Unitário</th><th>Total</th></tr></thead>
             <tbody>
-              <tr>
-                <td>Café</td>
-                <td><input class="qty" type="number" min="0" name="cafe_qtd" value="0" onchange="calc()"></td>
-                <td class="money">R$ 5,50</td>
-                <td class="money" id="tcafe">R$ 0,00</td>
-              </tr>
-              <tr>
-                <td>Almoço</td>
-                <td><input class="qty" type="number" min="0" name="almoco_qtd" value="0" onchange="calc()"></td>
-                <td class="money">R$ 19,00</td>
-                <td class="money" id="talmoco">R$ 0,00</td>
-              </tr>
-              <tr>
-                <td>Jantar</td>
-                <td><input class="qty" type="number" min="0" name="jantar_qtd" value="0" onchange="calc()"></td>
-                <td class="money">R$ 19,00</td>
-                <td class="money" id="tjantar">R$ 0,00</td>
-              </tr>
-              <tr>
-                <td>Lanche</td>
-                <td><input class="qty" type="number" min="0" name="lanche_qtd" value="0" onchange="calc()"></td>
-                <td class="money">R$ 5,50</td>
-                <td class="money" id="tlanche">R$ 0,00</td>
-              </tr>
+              <tr><td>Café</td><td><input class="qty" type="number" min="0" name="cafe_qtd" value="0" onchange="calc()"></td><td class="money">R$ 5,50</td><td class="money" id="tcafe">R$ 0,00</td></tr>
+              <tr><td>Almoço</td><td><input class="qty" type="number" min="0" name="almoco_qtd" value="0" onchange="calc()"></td><td class="money">R$ 19,00</td><td class="money" id="talmoco">R$ 0,00</td></tr>
+              <tr><td>Jantar</td><td><input class="qty" type="number" min="0" name="jantar_qtd" value="0" onchange="calc()"></td><td class="money">R$ 19,00</td><td class="money" id="tjantar">R$ 0,00</td></tr>
+              <tr><td>Lanche</td><td><input class="qty" type="number" min="0" name="lanche_qtd" value="0" onchange="calc()"></td><td class="money">R$ 5,50</td><td class="money" id="tlanche">R$ 0,00</td></tr>
             </tbody>
           </table>
         </div>
-
-        <div class="total-row">
-          <div>TOTAL R$</div>
-          <span id="tgeral">0,00</span>
-        </div>
-
+        <div class="total-row"><div>TOTAL R$</div><span id="tgeral">0,00</span></div>
         <div class="divider"></div>
-
-        <label>Observações</label>
-        <input type="text" name="obs">
-
+        <label>Observações</label><input type="text" name="obs">
         <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
-
-        <button type="button" class="btn" id="btnSair" style="background:#1f2d3a;margin-top:10px">
-          Sair
-        </button>
-
+        <button type="button" class="btn" id="btnSair" style="background:#1f2d3a;margin-top:10px">Sair / Trocar Usuário</button>
         <div id="formEr" class="msg err"></div>
       </form>
 
-      <!-- Pedido Enviado -->
       <div class="sent" id="sentBox">
         <h2>Pedido enviado ✅</h2>
         <textarea id="resumoTxt" readonly></textarea>
-
         <div class="btn-row">
           <button class="btn2 btn-blue" id="btnNovo" type="button">Novo Pedido</button>
           <button class="btn2 btn-dark" id="btnCopiar" type="button">Copiar Pedido</button>
         </div>
-
         <div id="copyOk" class="msg ok" style="margin-top:10px"></div>
       </div>
     </div>
-
   </div>
 
 <script>
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw5Jo1q3KBDagx7U6gShJS5EKWO6BgoAJr7cPM_DljHwxU0EZQQW2fiik6sAMyG6n2h/exec";
-
+  // ATENÇÃO: Substitua pelo seu URL do Apps Script
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw-NKWlIYdxrJEvnyk0pCYqxPlUJOl3CTQSFcSR3E2fsN6g7RkYQvo7lS2a2VFmd1MT/exec";
   const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
 
+  const f = document.getElementById("f");
   const loginBox = document.getElementById("loginBox");
   const formCard = document.getElementById("formCard");
   const sentBox = document.getElementById("sentBox");
 
-  const loginMat = document.getElementById("loginMat");
-  const loginPin = document.getElementById("loginPin");
-  const btnEntrar = document.getElementById("btnEntrar");
-  const loginEr = document.getElementById("loginEr");
-
-  const f = document.getElementById("f");
-  const funcionario = document.getElementById("funcionario");
-  const cr = document.getElementById("cr");
-  const fornecedor = document.getElementById("fornecedor");
-
-  const btnEnviar = document.getElementById("btnEnviar");
-  const formEr = document.getElementById("formEr");
-
-  const resumoTxt = document.getElementById("resumoTxt");
-  const btnNovo = document.getElementById("btnNovo");
-  const btnCopiar = document.getElementById("btnCopiar");
-  const copyOk = document.getElementById("copyOk");
-
-  const btnSair = document.getElementById("btnSair");
-
-  function msg(el, text){ el.innerText = text; el.style.display = "block"; }
-  function clearMsgs(){ [loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; }); }
-
-  function saveSession(mat, pin){ sessionStorage.setItem("mat", mat); sessionStorage.setItem("pin", pin); }
-  function getSession(){ return { mat: sessionStorage.getItem("mat") || "", pin: sessionStorage.getItem("pin") || "" }; }
-  function clearSession(){ sessionStorage.removeItem("mat"); sessionStorage.removeItem("pin"); }
-
-  function hojeISO(){
-    const d = new Date();
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth()+1).padStart(2,"0");
-    const dd = String(d.getDate()).padStart(2,"0");
-    return `${yyyy}-${mm}-${dd}`;
+  // Funções de Persistência (LocalStorage é mais rápido que chamar o servidor sempre)
+  function saveUser(data, pin) {
+    localStorage.setItem("user_data", JSON.stringify(data));
+    localStorage.setItem("user_pin", pin);
   }
+  function getUser() {
+    const data = localStorage.getItem("user_data");
+    const pin = localStorage.getItem("user_pin");
+    return data ? { ...JSON.parse(data), pin } : null;
+  }
+
+  function hojeISO(){ return new Date().toISOString().split('T')[0]; }
   function brl(n){ return (Number(n)||0).toFixed(2).replace(".", ","); }
 
   window.calc = function(){
-    const cafe = Number(f.cafe_qtd.value||0) * PRICES.cafe;
-    const almoco = Number(f.almoco_qtd.value||0) * PRICES.almoco;
-    const jantar = Number(f.jantar_qtd.value||0) * PRICES.jantar;
-    const lanche = Number(f.lanche_qtd.value||0) * PRICES.lanche;
-    const total = cafe + almoco + jantar + lanche;
-
-    document.getElementById("tcafe").innerText = "R$ " + brl(cafe);
-    document.getElementById("talmoco").innerText = "R$ " + brl(almoco);
-    document.getElementById("tjantar").innerText = "R$ " + brl(jantar);
-    document.getElementById("tlanche").innerText = "R$ " + brl(lanche);
-    document.getElementById("tgeral").innerText = brl(total);
+    const q = { c: f.cafe_qtd.value, a: f.almoco_qtd.value, j: f.jantar_qtd.value, l: f.lanche_qtd.value };
+    const t = { 
+      c: q.c * PRICES.cafe, a: q.a * PRICES.almoco, j: q.j * PRICES.jantar, l: q.l * PRICES.lanche 
+    };
+    document.getElementById("tcafe").innerText = "R$ " + brl(t.c);
+    document.getElementById("talmoco").innerText = "R$ " + brl(t.a);
+    document.getElementById("tjantar").innerText = "R$ " + brl(t.j);
+    document.getElementById("tlanche").innerText = "R$ " + brl(t.l);
+    document.getElementById("tgeral").innerText = brl(t.c + t.a + t.j + t.l);
   };
 
-  async function auth(mat, pin){
-    const res = await fetch(WEBAPP_URL, {
-      method:"POST",
-      headers:{ "Content-Type":"text/plain;charset=utf-8" },
-      body: JSON.stringify({ action:"auth", matricula: mat, pin })
-    });
-    return res.json();
+  function showForm(user) {
+    document.getElementById("funcionario").value = user.funcionario;
+    document.getElementById("cr").value = user.cr;
+    document.getElementById("fornecedor").value = user.fornecedor;
+    document.getElementById("data_input").value = hojeISO();
+    loginBox.style.display = "none";
+    formCard.style.display = "block";
+    f.style.display = "block";
+    sentBox.style.display = "none";
+    calc();
   }
 
-  (async function autoLogin(){
-    loginBox.style.display = "block";
-    formCard.style.display = "none";
-    sentBox.style.display = "none";
+  // Auto-login instantâneo
+  const saved = getUser();
+  if(saved) showForm(saved);
 
-    const sess = getSession();
-    if(!sess.mat || !sess.pin) return;
+  document.getElementById("btnEntrar").onclick = async () => {
+    const mat = document.getElementById("loginMat").value.trim();
+    const pin = document.getElementById("loginPin").value.trim();
+    const btn = document.getElementById("btnEntrar");
+    const err = document.getElementById("loginEr");
 
-    try{
-      const data = await auth(sess.mat, sess.pin);
-      if(data && data.ok){
-        funcionario.value = data.funcionario || "";
-        cr.value = data.cr || "";
-        fornecedor.value = data.fornecedor || "";
+    if(!mat || !pin) return;
+    btn.disabled = true; btn.innerText = "Entrando...";
+    err.style.display = "none";
 
-        f.data.value = hojeISO();
-        calc();
-
-        loginBox.style.display = "none";
-        formCard.style.display = "block";
-        sentBox.style.display = "none";
-        return;
+    try {
+      const res = await fetch(WEBAPP_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "auth", matricula: mat, pin: pin })
+      });
+      const data = await res.json();
+      if(data.ok) {
+        saveUser(data, pin);
+        showForm({ ...data, pin });
+      } else {
+        err.innerText = "❌ " + (data.error || "Erro no login");
+        err.style.display = "block";
       }
+    } catch(e) { alert("Erro de conexão"); }
+    finally { btn.disabled = false; btn.innerText = "Entrar"; }
+  };
 
-      clearSession();
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
-      sentBox.style.display = "none";
-
-    } catch(e){
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
-      sentBox.style.display = "none";
-    }
-  })();
-
-  btnEntrar.addEventListener("click", async () => {
-    clearMsgs();
-    const mat = String(loginMat.value||"").trim();
-    const pin = String(loginPin.value||"").trim();
-    if(!mat || !pin){ msg(loginEr, "❌ Informe matrícula e PIN."); return; }
-
-    btnEntrar.disabled = true;
-    btnEntrar.textContent = "Entrando...";
-
-    try{
-      const data = await auth(mat, pin);
-      if(!data.ok){ msg(loginEr, "❌ " + (data.error || "Falha no login.")); return; }
-
-      saveSession(mat, pin);
-
-      funcionario.value = data.funcionario || "";
-      cr.value = data.cr || "";
-      fornecedor.value = data.fornecedor || "";
-
-      f.data.value = hojeISO();
-      calc();
-
-      loginBox.style.display = "none";
-      formCard.style.display = "block";
-      sentBox.style.display = "none";
-    } finally {
-      btnEntrar.disabled = false;
-      btnEntrar.textContent = "Entrar";
-    }
-  });
-
-  f.addEventListener("submit", async (e) => {
+  f.onsubmit = async (e) => {
     e.preventDefault();
-    clearMsgs();
-
-    const sess = getSession();
-    if(!sess.mat || !sess.pin){
-      msg(formEr, "❌ Sessão expirada. Faça login novamente.");
-      clearSession();
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
-      return;
-    }
-
-    const soma = Number(f.cafe_qtd.value||0)+Number(f.almoco_qtd.value||0)+Number(f.jantar_qtd.value||0)+Number(f.lanche_qtd.value||0);
-    if(soma <= 0){ msg(formEr, "❌ Informe pelo menos 1 refeição (quantidade > 0)."); return; }
-
-    btnEnviar.disabled = true;
-    btnEnviar.textContent = "Enviando...";
+    const btn = document.getElementById("btnEnviar");
+    const user = getUser();
+    
+    btn.disabled = true; btn.innerText = "Enviando...";
 
     const payload = Object.fromEntries(new FormData(f).entries());
     payload.action = "pedido";
-    payload.matricula = sess.mat;
-    payload.pin = sess.pin;
+    payload.matricula = user.matricula;
+    payload.pin = user.pin;
     payload.user_agent = navigator.userAgent;
 
-    try{
-      const res = await fetch(WEBAPP_URL, {
-        method:"POST",
-        headers:{ "Content-Type":"text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
+    try {
+      const res = await fetch(WEBAPP_URL, { method: "POST", body: JSON.stringify(payload) });
       const data = await res.json();
-
-      if(res.ok && data.ok){
-        resumoTxt.value = data.resumo || "";
-        sentBox.style.display = "block";
+      if(data.ok) {
+        document.getElementById("resumoTxt").value = data.resumo;
         f.style.display = "none";
-      } else {
-        msg(formEr, "❌ " + (data.error || "Falha ao enviar."));
-      }
-    } catch(err){
-      msg(formEr, "❌ Erro de conexão. Verifique internet e tente novamente.");
-    } finally {
-      btnEnviar.disabled = false;
-      btnEnviar.textContent = "Enviar Requisição";
-    }
-  });
+        sentBox.style.display = "block";
+      } else { alert("Erro: " + data.error); }
+    } catch(e) { alert("Erro ao enviar"); }
+    finally { btn.disabled = false; btn.innerText = "Enviar Requisição"; }
+  };
 
-  btnCopiar.addEventListener("click", async () => {
-    clearMsgs();
-    try{
-      await navigator.clipboard.writeText(resumoTxt.value);
-      msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
-      copyOk.className = "msg ok";
-    } catch(e){
-      resumoTxt.focus(); resumoTxt.select();
-      document.execCommand("copy");
-      msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
-      copyOk.className = "msg ok";
-    }
-  });
+  document.getElementById("btnCopiar").onclick = () => {
+    const txt = document.getElementById("resumoTxt");
+    txt.select();
+    navigator.clipboard.writeText(txt.value);
+    const ok = document.getElementById("copyOk");
+    ok.innerText = "✅ Copiado!"; ok.style.display = "block";
+  };
 
-  btnNovo.addEventListener("click", () => {
-    clearMsgs();
-    sentBox.style.display = "none";
-    f.style.display = "block";
+  document.getElementById("btnNovo").onclick = () => {
+    f.reset(); showForm(getUser());
+  };
 
-    f.fazenda.value = "";
-    f.portador.value = "";
-    f.cafe_qtd.value = 0;
-    f.almoco_qtd.value = 0;
-    f.jantar_qtd.value = 0;
-    f.lanche_qtd.value = 0;
-    f.obs.value = "";
-    f.data.value = hojeISO();
-    calc();
-  });
-
-  btnSair.addEventListener("click", () => {
-    clearSession();
+  document.getElementById("btnSair").onclick = () => {
+    localStorage.clear();
     location.reload();
-  });
+  };
 </script>
-
 </body>
 </html>
