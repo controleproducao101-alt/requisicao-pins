@@ -107,15 +107,24 @@
       white-space:nowrap;
     }
     tbody td:last-child{border-right:0}
+
+    /* ✅ DIMINUIR "QUANT." (o input) */
     .qty{
-      width:110px;
+      width:78px;              /* antes 110px */
+      max-width:78px;
       margin:auto;
       text-align:center;
-      padding:10px;
+      padding:8px 6px;         /* menor */
       border:2px solid var(--line);
       border-radius:10px;
-      font-size:16px;
+      font-size:15px;          /* menor */
     }
+    /* deixa os botões de setinha (no celular) menores quando existir */
+    input.qty::-webkit-outer-spin-button,
+    input.qty::-webkit-inner-spin-button{
+      margin-left:6px;
+    }
+
     .money{font-weight:800;font-size:18px;white-space:nowrap}
 
     .total-row{
@@ -177,7 +186,8 @@
       body{padding:12px 8px}
       .card-header h1{font-size:22px}
       .grid-2{grid-template-columns: 1fr;}
-      .qty{width:100%;}
+      /* ✅ no mobile a quantidade fica ainda menor */
+      .qty{width:64px; max-width:64px; padding:7px 6px; font-size:14px;}
       .total-row{font-size:18px}
       .total-row span{font-size:18px}
       .btn{font-size:18px}
@@ -323,7 +333,6 @@
 
         <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
 
-        <!-- (Opcional) Botão Sair -->
         <button type="button" class="btn" id="btnSair" style="background:#1f2d3a;margin-top:10px">
           Sair
         </button>
@@ -348,7 +357,6 @@
   </div>
 
 <script>
-  // 👉 COLE A URL DO SEU WEBAPP AQUI
   const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw5Jo1q3KBDagx7U6gShJS5EKWO6BgoAJr7cPM_DljHwxU0EZQQW2fiik6sAMyG6n2h/exec";
 
   const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
@@ -416,8 +424,6 @@
     return res.json();
   }
 
-  // ✅ CORREÇÃO PRINCIPAL:
-  // Estado inicial SEMPRE no login. Só mostra o formulário após auth OK.
   (async function autoLogin(){
     loginBox.style.display = "block";
     formCard.style.display = "none";
@@ -442,14 +448,12 @@
         return;
       }
 
-      // se falhou, limpa sessão e fica no login
       clearSession();
       loginBox.style.display = "block";
       formCard.style.display = "none";
       sentBox.style.display = "none";
 
     } catch(e){
-      // erro de rede: fica no login
       loginBox.style.display = "block";
       formCard.style.display = "none";
       sentBox.style.display = "none";
@@ -565,7 +569,6 @@
     calc();
   });
 
-  // Sair
   btnSair.addEventListener("click", () => {
     clearSession();
     location.reload();
