@@ -64,7 +64,6 @@
     input[readonly]{background:#f2f7fc;color:#2b4c65}
     .divider{height:2px;background:var(--line);margin:14px 0}
 
-    /* Tabela responsiva */
     .table-wrap{
       width:100%;
       overflow-x:auto;
@@ -108,23 +107,17 @@
     }
     tbody td:last-child{border-right:0}
 
-    /* ✅ DIMINUIR "QUANT." (o input) */
+    /* Quantidade menor */
     .qty{
-      width:78px;              /* antes 110px */
+      width:78px;
       max-width:78px;
       margin:auto;
       text-align:center;
-      padding:8px 6px;         /* menor */
+      padding:8px 6px;
       border:2px solid var(--line);
       border-radius:10px;
-      font-size:15px;          /* menor */
+      font-size:15px;
     }
-    /* deixa os botões de setinha (no celular) menores quando existir */
-    input.qty::-webkit-outer-spin-button,
-    input.qty::-webkit-inner-spin-button{
-      margin-left:6px;
-    }
-
     .money{font-weight:800;font-size:18px;white-space:nowrap}
 
     .total-row{
@@ -181,12 +174,12 @@
     }
     .btn-dark{background:#1f2d3a;color:#fff}
     .btn-blue{background:var(--blue);color:#fff}
+    .btn-mid{background:var(--blue2);color:#fff}
 
     @media (max-width: 720px){
       body{padding:12px 8px}
       .card-header h1{font-size:22px}
       .grid-2{grid-template-columns: 1fr;}
-      /* ✅ no mobile a quantidade fica ainda menor */
       .qty{width:64px; max-width:64px; padding:7px 6px; font-size:14px;}
       .total-row{font-size:18px}
       .total-row span{font-size:18px}
@@ -218,7 +211,7 @@
       <button class="btn" id="btnEntrar" type="button" style="margin-top:14px">Entrar</button>
 
       <div id="loginEr" class="msg err"></div>
-      <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado, CR e Fornecedor.</div>
+      <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado e Fornecedor. (CR será selecionado.)</div>
     </div>
 
     <!-- FORM -->
@@ -264,9 +257,16 @@
             </select>
           </div>
 
+          <!-- ✅ CR AGORA É SELEÇÃO -->
           <div>
-            <label>CR</label>
-            <input type="text" id="cr" readonly>
+            <label>CR *</label>
+            <select name="cr" required>
+              <option value="" selected disabled>Selecione o CR...</option>
+              <option>GN1002</option>
+              <option>GN1010</option>
+              <option>GN1011</option>
+              <option>GN1180</option>
+            </select>
           </div>
         </div>
 
@@ -333,6 +333,11 @@
 
         <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
 
+        <!-- ✅ Recuperar último pedido (se perdeu o resumo) -->
+        <button type="button" class="btn" id="btnRecuperar" style="background:#0b5f98;margin-top:10px">
+          Recuperar último pedido
+        </button>
+
         <button type="button" class="btn" id="btnSair" style="background:#1f2d3a;margin-top:10px">
           Sair
         </button>
@@ -357,8 +362,7 @@
   </div>
 
 <script>
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxk5U1RSZP57WjoxxcTn_nfyMshODVnPJ7b6Kvpr98qRl70b2yPuNlH8nrI1b-KQCZT/exec";
-
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzwV8hTYr0MJuTiTptyoaeGICKPFRrxD-H7577OHUxmkfRG4GZ6AxEroE33Ro83nAr1/exec";
   const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
 
   const loginBox = document.getElementById("loginBox");
@@ -372,7 +376,6 @@
 
   const f = document.getElementById("f");
   const funcionario = document.getElementById("funcionario");
-  const cr = document.getElementById("cr");
   const fornecedor = document.getElementById("fornecedor");
 
   const btnEnviar = document.getElementById("btnEnviar");
@@ -384,6 +387,7 @@
   const copyOk = document.getElementById("copyOk");
 
   const btnSair = document.getElementById("btnSair");
+  const btnRecuperar = document.getElementById("btnRecuperar");
 
   function msg(el, text){ el.innerText = text; el.style.display = "block"; }
   function clearMsgs(){ [loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; }); }
@@ -436,7 +440,6 @@
       const data = await auth(sess.mat, sess.pin);
       if(data && data.ok){
         funcionario.value = data.funcionario || "";
-        cr.value = data.cr || "";
         fornecedor.value = data.fornecedor || "";
 
         f.data.value = hojeISO();
@@ -476,7 +479,6 @@
       saveSession(mat, pin);
 
       funcionario.value = data.funcionario || "";
-      cr.value = data.cr || "";
       fornecedor.value = data.fornecedor || "";
 
       f.data.value = hojeISO();
@@ -501,6 +503,13 @@
       clearSession();
       loginBox.style.display = "block";
       formCard.style.display = "none";
+      return;
+    }
+
+    // valida CR selecionado
+    const crSel = String(f.cr.value || "").trim();
+    if(!crSel){
+      msg(formEr, "❌ Selecione o CR.");
       return;
     }
 
@@ -539,6 +548,44 @@
     }
   });
 
+  btnRecuperar.addEventListener("click", async () => {
+    clearMsgs();
+
+    const sess = getSession();
+    if(!sess.mat || !sess.pin){
+      msg(formEr, "❌ Sessão expirada. Faça login novamente.");
+      clearSession();
+      loginBox.style.display = "block";
+      formCard.style.display = "none";
+      return;
+    }
+
+    btnRecuperar.disabled = true;
+    btnRecuperar.textContent = "Buscando...";
+
+    try{
+      const res = await fetch(WEBAPP_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify({ action:"ultimo_pedido", matricula: sess.mat, pin: sess.pin })
+      });
+      const data = await res.json();
+
+      if(res.ok && data.ok){
+        resumoTxt.value = data.resumo || "";
+        sentBox.style.display = "block";
+        f.style.display = "none";
+      } else {
+        msg(formEr, "❌ " + (data.error || "Não foi possível recuperar."));
+      }
+    } catch(e){
+      msg(formEr, "❌ Erro de conexão. Tente novamente.");
+    } finally {
+      btnRecuperar.disabled = false;
+      btnRecuperar.textContent = "Recuperar último pedido";
+    }
+  });
+
   btnCopiar.addEventListener("click", async () => {
     clearMsgs();
     try{
@@ -559,6 +606,7 @@
     f.style.display = "block";
 
     f.fazenda.value = "";
+    f.cr.value = "";            // ✅ limpa CR
     f.portador.value = "";
     f.cafe_qtd.value = 0;
     f.almoco_qtd.value = 0;
