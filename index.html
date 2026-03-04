@@ -1,136 +1,520 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="pt-br">
 <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Requisição de Alimentação</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
-        button { background-color: #28a745; color: white; border: none; font-weight: bold; cursor: pointer; }
-        .hidden { display: none; }
-        .resumo { background: #e9ecef; padding: 15px; border-radius: 4px; font-size: 0.9em; white-space: pre-wrap; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Requisição de Alimentação</title>
+
+  <style>
+    :root{
+      --blue:#1f6fa8;
+      --blue2:#0b5f98;
+      --line:#cfe3f3;
+      --bg:#f7fbff;
+      --text:#0b2235;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:#ffffff;
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:18px 10px;
+    }
+    .wrap{width: min(920px, 100%);}
+    .card{
+      border:2px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+    .card-header{
+      padding:18px 16px;
+      text-align:center;
+      border-bottom:2px solid var(--line);
+    }
+    .card-header h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:.5px;
+      color:var(--blue);
+      font-weight:800;
+    }
+    .section{padding:16px;}
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    label{display:block;font-weight:700;margin-bottom:6px}
+    input,select,textarea{
+      width:100%;
+      padding:12px 12px;
+      border:2px solid var(--line);
+      border-radius:10px;
+      font-size:15px;
+      outline:none;
+      background:#fff;
+    }
+    input[readonly]{background:#f2f7fc;color:#2b4c65}
+    .divider{height:2px;background:var(--line);margin:14px 0}
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      margin-top:8px;
+      border:2px solid var(--line);
+      border-radius:12px;
+      overflow:hidden;
+    }
+    thead th{
+      background: var(--blue);
+      color:#fff;
+      padding:12px 10px;
+      font-size:16px;
+      text-align:center;
+      border-right:2px solid #ffffff22;
+    }
+    thead th:last-child{border-right:0}
+    tbody td{
+      padding:10px;
+      border-top:2px solid var(--line);
+      border-right:2px solid var(--line);
+      text-align:center;
+      background:#fff;
+      vertical-align:middle;
+    }
+    tbody tr td:first-child{
+      text-align:left;
+      font-weight:800;
+      color:var(--blue2);
+      font-size:20px;
+      padding-left:14px;
+    }
+    tbody td:last-child{border-right:0}
+    .qty{
+      width:110px;
+      margin:auto;
+      text-align:center;
+      padding:10px;
+      border:2px solid var(--line);
+      border-radius:10px;
+      font-size:16px;
+    }
+    .money{font-weight:800;font-size:18px}
+    .total-row{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:18px;
+      padding:14px 6px 0;
+      font-weight:900;
+      color:var(--blue2);
+      font-size:22px;
+    }
+    .total-row span{
+      min-width:110px;
+      text-align:right;
+      color:#111;
+      font-size:22px;
+    }
+    .btn{
+      width:100%;
+      padding:16px 14px;
+      border:none;
+      border-radius:12px;
+      background: linear-gradient(180deg, #2f86c9, #1b6faa);
+      color:#fff;
+      font-size:20px;
+      font-weight:900;
+      cursor:pointer;
+      margin-top:16px;
+    }
+    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .msg{margin-top:12px;padding:12px;border-radius:10px;display:none;font-weight:700}
+    .ok{background:#e7f7ea;border:1px solid #bde5c5}
+    .err{background:#fde8e8;border:1px solid #f5b5b5}
+
+    .login{
+      margin-bottom:12px;
+      padding:16px;
+      border:2px solid var(--line);
+      border-radius:14px;
+      background: var(--bg);
+    }
+    .login h3{margin:0 0 10px;color:var(--blue2);font-size:18px}
+    .small{font-size:12px;color:#5a6b79;margin-top:8px}
+
+    .sent{display:none;padding:16px}
+    .sent h2{margin:4px 0 10px;color:var(--blue2);font-size:22px}
+    .sent textarea{min-height:200px;white-space:pre-wrap}
+    .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .btn2{
+      padding:14px 12px;border-radius:12px;border:none;font-weight:900;font-size:16px;cursor:pointer
+    }
+    .btn-dark{background:#1f2d3a;color:#fff}
+    .btn-blue{background:var(--blue);color:#fff}
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Requisição Alimentação</h2>
-        
-        <div id="loginSection">
-            <p>Informe seus dados para acessar:</p>
-            <input type="number" id="mat_login" placeholder="Matrícula">
-            <input type="password" id="pin_login" placeholder="PIN (Senha)">
-            <button onclick="fazerLogin()" id="btnLogin">Entrar</button>
-        </div>
+  <div class="wrap">
 
-        <div id="formSection" class="hidden">
-            <p>Olá, <b id="nome_usuario"></b></p>
-            <label>Data da Refeição:</label>
-            <input type="date" id="data_ref">
-            
-            <input type="text" id="fazenda" placeholder="Fazenda">
-            <input type="text" id="portador" placeholder="Portador">
-            
-            <hr>
-            <label>Café:</label> <input type="number" id="cafe" value="0">
-            <label>Almoço:</label> <input type="number" id="almoco" value="0">
-            <label>Jantar:</label> <input type="number" id="jantar" value="0">
-            <label>Lanche:</label> <input type="number" id="lanche" value="0">
-            
-            <input type="text" id="obs" placeholder="Observações (opcional)">
-            <button onclick="enviarPedido()" id="btnEnviar">Enviar Pedido</button>
-        </div>
+    <!-- LOGIN -->
+    <div class="login" id="loginBox">
+      <h3>Acesso do Encarregado</h3>
 
-        <div id="successSection" class="hidden">
-            <h3 style="color: green;">Pedido Enviado! ✅</h3>
-            <div id="resumoTexto" class="resumo"></div>
-            <button onclick="window.location.reload()">Novo Pedido</button>
+      <div class="grid-2">
+        <div>
+          <label>Usuário (Matrícula)</label>
+          <input id="loginMat" inputmode="numeric" placeholder="Ex: 5042">
         </div>
+        <div>
+          <label>Senha (PIN)</label>
+          <input id="loginPin" type="password" inputmode="numeric" placeholder="••••••">
+        </div>
+      </div>
+
+      <button class="btn" id="btnEntrar" type="button" style="margin-top:14px">Entrar</button>
+
+      <div id="loginOk" class="msg ok"></div>
+      <div id="loginEr" class="msg err"></div>
+      <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado, CR e Fornecedor.</div>
     </div>
 
-    <script>
-        // --- COLOQUE SEU LINK DO GOOGLE ABAIXO ---
-        const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxy4Q_je3JMxrY13tWYXipUZiq8Y6DJ5MEFiUjba9v0UrytIJVJlKqj_NBAbupWolE/exec";
+    <!-- FORM -->
+    <div class="card" id="formCard" style="display:none">
+      <div class="card-header">
+        <h1>REQUISIÇÃO DE ALIMENTAÇÃO</h1>
+      </div>
 
-        let dadosUsuario = {};
+      <form id="f" class="section">
+        <div class="grid-2">
+          <div>
+            <label>Data *</label>
+            <input type="date" name="data" required>
+          </div>
 
-        async function fazerLogin() {
-            const mat = document.getElementById('mat_login').value;
-            const pin = document.getElementById('pin_login').value;
-            const btn = document.getElementById('btnLogin');
+          <div>
+            <label>Encarregado</label>
+            <input type="text" id="funcionario" readonly>
+          </div>
 
-            if(!mat || !pin) return alert("Preencha matrícula e PIN");
-            
-            btn.disabled = true;
-            btn.innerText = "Verificando...";
+          <div>
+            <label>Fazenda *</label>
+            <select name="fazenda" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option>SANTA LUCIA ||</option>
+              <option>TANGARA</option>
+              <option>SANTÍSSIMA TRINDADE</option>
+              <option>NOSSA SENHORA APARECIDA</option>
+              <option>TANGARÁ II</option>
+              <option>ÁGUA AMARELA</option>
+              <option>SÃO FRANCISCO</option>
+              <option>RONCA</option>
+              <option>SÃO SALVADOR I</option>
+              <option>SÃO MARTINHO</option>
+              <option>SANTA MARIA</option>
+              <option>SANTA LUCIA</option>
+              <option>NOVO CERRADO</option>
+              <option>SÃO SALVADOR II</option>
+              <option>ESTIVA</option>
+              <option>NOVA ERA</option>
+              <option>BREJO GRANDE</option>
+              <option>3R</option>
+            </select>
+          </div>
 
-            try {
-                const res = await fetch(WEBAPP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'auth', matricula: mat, pin: pin })
-                });
-                const data = await res.json();
+          <div>
+            <label>CR</label>
+            <input type="text" id="cr" readonly>
+          </div>
+        </div>
 
-                if(data.ok) {
-                    dadosUsuario = data;
-                    dadosUsuario.pin = pin; // guarda o pin para o envio
-                    document.getElementById('nome_usuario').innerText = data.funcionario;
-                    document.getElementById('loginSection').classList.add('hidden');
-                    document.getElementById('formSection').classList.remove('hidden');
-                } else {
-                    alert("Erro: " + data.error);
-                }
-            } catch (e) {
-                alert("Erro ao conectar com o servidor.");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Entrar";
-            }
+        <div class="divider"></div>
+
+        <label>Solicitamos do Fornecedor</label>
+        <input type="text" id="fornecedor" readonly>
+
+        <div style="margin-top:12px">
+          <label>Entregar ao Portador *</label>
+          <input type="text" name="portador" required>
+        </div>
+
+        <div class="divider"></div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Discriminação</th>
+              <th>Quant.</th>
+              <th>V. Unitário</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Café</td>
+              <td><input class="qty" type="number" min="0" name="cafe_qtd" value="0" onchange="calc()"></td>
+              <td class="money">R$ 5,50</td>
+              <td class="money" id="tcafe">R$ 0,00</td>
+            </tr>
+            <tr>
+              <td>Almoço</td>
+              <td><input class="qty" type="number" min="0" name="almoco_qtd" value="0" onchange="calc()"></td>
+              <td class="money">R$ 19,00</td>
+              <td class="money" id="talmoco">R$ 0,00</td>
+            </tr>
+            <tr>
+              <td>Jantar</td>
+              <td><input class="qty" type="number" min="0" name="jantar_qtd" value="0" onchange="calc()"></td>
+              <td class="money">R$ 19,00</td>
+              <td class="money" id="tjantar">R$ 0,00</td>
+            </tr>
+            <tr>
+              <td>Lanche</td>
+              <td><input class="qty" type="number" min="0" name="lanche_qtd" value="0" onchange="calc()"></td>
+              <td class="money">R$ 5,50</td>
+              <td class="money" id="tlanche">R$ 0,00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="total-row">
+          <div>TOTAL R$</div>
+          <span id="tgeral">0,00</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <label>Observações</label>
+        <input type="text" name="obs">
+
+        <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
+
+        <div id="formEr" class="msg err"></div>
+      </form>
+
+      <!-- Pedido Enviado -->
+      <div class="sent" id="sentBox">
+        <h2>Pedido enviado ✅</h2>
+        <textarea id="resumoTxt" readonly></textarea>
+
+        <div class="btn-row">
+          <button class="btn2 btn-blue" id="btnNovo" type="button">Novo Pedido</button>
+          <button class="btn2 btn-dark" id="btnCopiar" type="button">Copiar Pedido</button>
+        </div>
+
+        <div id="copyOk" class="msg ok" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  // ✅ AQUI É ONDE FICA O WEBAPP_URL
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxYjd3z7VKMR1Un7nnPTi2bTdPicVmNy--EvAGwRQkcpMyi3h8Y3TgnT0G7--cY5_Tw/exec";
+
+  const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
+
+  const loginBox = document.getElementById("loginBox");
+  const formCard = document.getElementById("formCard");
+  const sentBox = document.getElementById("sentBox");
+
+  const loginMat = document.getElementById("loginMat");
+  const loginPin = document.getElementById("loginPin");
+  const btnEntrar = document.getElementById("btnEntrar");
+  const loginOk = document.getElementById("loginOk");
+  const loginEr = document.getElementById("loginEr");
+
+  const f = document.getElementById("f");
+  const funcionario = document.getElementById("funcionario");
+  const cr = document.getElementById("cr");
+  const fornecedor = document.getElementById("fornecedor");
+
+  const btnEnviar = document.getElementById("btnEnviar");
+  const formEr = document.getElementById("formEr");
+
+  const resumoTxt = document.getElementById("resumoTxt");
+  const btnNovo = document.getElementById("btnNovo");
+  const btnCopiar = document.getElementById("btnCopiar");
+  const copyOk = document.getElementById("copyOk");
+
+  function msg(el, text){
+    el.innerText = text;
+    el.style.display = "block";
+  }
+  function clearMsgs(){
+    [loginOk, loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; });
+  }
+
+  function saveSession(mat, pin){
+    sessionStorage.setItem("mat", mat);
+    sessionStorage.setItem("pin", pin);
+  }
+  function getSession(){
+    return { mat: sessionStorage.getItem("mat") || "", pin: sessionStorage.getItem("pin") || "" };
+  }
+
+  function hojeISO(){
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const dd = String(d.getDate()).padStart(2,"0");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  function brl(n){ return (Number(n)||0).toFixed(2).replace(".", ","); }
+
+  window.calc = function(){
+    const cafe = Number(f.cafe_qtd.value||0) * PRICES.cafe;
+    const almoco = Number(f.almoco_qtd.value||0) * PRICES.almoco;
+    const jantar = Number(f.jantar_qtd.value||0) * PRICES.jantar;
+    const lanche = Number(f.lanche_qtd.value||0) * PRICES.lanche;
+    const total = cafe + almoco + jantar + lanche;
+
+    document.getElementById("tcafe").innerText = "R$ " + brl(cafe);
+    document.getElementById("talmoco").innerText = "R$ " + brl(almoco);
+    document.getElementById("tjantar").innerText = "R$ " + brl(jantar);
+    document.getElementById("tlanche").innerText = "R$ " + brl(lanche);
+    document.getElementById("tgeral").innerText = brl(total);
+  };
+
+  async function auth(mat, pin){
+    const res = await fetch(WEBAPP_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"text/plain;charset=utf-8" },
+      body: JSON.stringify({ action:"auth", matricula: mat, pin })
+    });
+    return res.json();
+  }
+
+  btnEntrar.addEventListener("click", async () => {
+    clearMsgs();
+    const mat = String(loginMat.value||"").trim();
+    const pin = String(loginPin.value||"").trim();
+    if(!mat || !pin){ msg(loginEr, "❌ Informe matrícula e PIN."); return; }
+
+    btnEntrar.disabled = true;
+    btnEntrar.textContent = "Entrando...";
+
+    try{
+      const data = await auth(mat, pin);
+      if(!data.ok){ msg(loginEr, "❌ " + (data.error || "Falha no login.")); return; }
+
+      saveSession(mat, pin);
+
+      funcionario.value = data.funcionario || "";
+      cr.value = data.cr || "";
+      fornecedor.value = data.fornecedor || "";
+
+      f.data.value = hojeISO();
+      calc();
+
+      loginBox.style.display = "none";
+      formCard.style.display = "block";
+      sentBox.style.display = "none";
+    } finally {
+      btnEntrar.disabled = false;
+      btnEntrar.textContent = "Entrar";
+    }
+  });
+
+  // auto login se já tiver sessão salva no tablet
+  (async function autoLogin(){
+    const sess = getSession();
+    if(sess.mat && sess.pin){
+      try{
+        const data = await auth(sess.mat, sess.pin);
+        if(data.ok){
+          funcionario.value = data.funcionario || "";
+          cr.value = data.cr || "";
+          fornecedor.value = data.fornecedor || "";
+          f.data.value = hojeISO();
+          calc();
+          loginBox.style.display = "none";
+          formCard.style.display = "block";
+          return;
         }
+      } catch(e){}
+    }
+    loginBox.style.display = "block";
+    formCard.style.display = "none";
+  })();
 
-        async function enviarPedido() {
-            const btn = document.getElementById('btnEnviar');
-            btn.disabled = true;
-            btn.innerText = "Enviando...";
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    clearMsgs();
 
-            const payload = {
-                action: 'pedido',
-                matricula: dadosUsuario.matricula,
-                pin: dadosUsuario.pin,
-                data: document.getElementById('data_ref').value,
-                fazenda: document.getElementById('fazenda').value,
-                portador: document.getElementById('portador').value,
-                cafe_qtd: document.getElementById('cafe').value,
-                almoco_qtd: document.getElementById('almoco').value,
-                jantar_qtd: document.getElementById('jantar').value,
-                lanche_qtd: document.getElementById('lanche').value,
-                obs: document.getElementById('obs').value,
-                user_agent: navigator.userAgent
-            };
+    const sess = getSession();
+    if(!sess.mat || !sess.pin){ msg(formEr, "❌ Sessão expirada. Faça login novamente."); return; }
 
-            try {
-                const res = await fetch(WEBAPP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
+    const soma = Number(f.cafe_qtd.value||0)+Number(f.almoco_qtd.value||0)+Number(f.jantar_qtd.value||0)+Number(f.lanche_qtd.value||0);
+    if(soma <= 0){ msg(formEr, "❌ Informe pelo menos 1 refeição (quantidade > 0)."); return; }
 
-                if(data.ok) {
-                    document.getElementById('formSection').classList.add('hidden');
-                    document.getElementById('successSection').classList.remove('hidden');
-                    document.getElementById('resumoTexto').innerText = data.resumo;
-                } else {
-                    alert("Erro ao enviar: " + data.error);
-                }
-            } catch (e) {
-                alert("Erro de conexão.");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Enviar Pedido";
-            }
-        }
-    </script>
+    btnEnviar.disabled = true;
+    btnEnviar.textContent = "Enviando...";
+
+    const payload = Object.fromEntries(new FormData(f).entries());
+    payload.action = "pedido";
+    payload.matricula = sess.mat;
+    payload.pin = sess.pin;
+    payload.user_agent = navigator.userAgent;
+
+    try{
+      const res = await fetch(WEBAPP_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if(res.ok && data.ok){
+        resumoTxt.value = data.resumo || "";
+        sentBox.style.display = "block";
+        f.style.display = "none";
+      } else {
+        msg(formEr, "❌ " + (data.error || "Falha ao enviar."));
+      }
+    } catch(err){
+      msg(formEr, "❌ Erro de conexão. Verifique internet e tente novamente.");
+    } finally {
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = "Enviar Requisição";
+    }
+  });
+
+  btnCopiar.addEventListener("click", async () => {
+    clearMsgs();
+    try{
+      await navigator.clipboard.writeText(resumoTxt.value);
+      msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
+    } catch(e){
+      resumoTxt.focus();
+      resumoTxt.select();
+      document.execCommand("copy");
+      msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
+    }
+  });
+
+  btnNovo.addEventListener("click", () => {
+    clearMsgs();
+    sentBox.style.display = "none";
+    f.style.display = "block";
+
+    f.fazenda.value = "";
+    f.portador.value = "";
+    f.cafe_qtd.value = 0;
+    f.almoco_qtd.value = 0;
+    f.jantar_qtd.value = 0;
+    f.lanche_qtd.value = 0;
+    f.obs.value = "";
+    f.data.value = hojeISO();
+    calc();
+  });
+</script>
+
 </body>
 </html>
