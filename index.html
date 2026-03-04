@@ -64,7 +64,7 @@
     input[readonly]{background:#f2f7fc;color:#2b4c65}
     .divider{height:2px;background:var(--line);margin:14px 0}
 
-    /* Tabela responsiva: em telas pequenas, permite rolar */
+    /* Tabela responsiva */
     .table-wrap{
       width:100%;
       overflow-x:auto;
@@ -72,7 +72,7 @@
     }
     table{
       width:100%;
-      min-width:560px; /* garante estrutura, rola no celular */
+      min-width:560px;
       border-collapse:separate;
       border-spacing:0;
       margin-top:8px;
@@ -173,7 +173,6 @@
     .btn-dark{background:#1f2d3a;color:#fff}
     .btn-blue{background:var(--blue);color:#fff}
 
-    /* Ajustes mobile */
     @media (max-width: 720px){
       body{padding:12px 8px}
       .card-header h1{font-size:22px}
@@ -183,6 +182,7 @@
       .total-row span{font-size:18px}
       .btn{font-size:18px}
       tbody tr td:first-child{font-size:18px}
+      .btn-row{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -190,6 +190,7 @@
 <body>
   <div class="wrap">
 
+    <!-- LOGIN -->
     <div class="login" id="loginBox">
       <h3>Acesso do Encarregado</h3>
 
@@ -210,6 +211,7 @@
       <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado, CR e Fornecedor.</div>
     </div>
 
+    <!-- FORM -->
     <div class="card" id="formCard" style="display:none">
       <div class="card-header">
         <h1>REQUISIÇÃO DE ALIMENTAÇÃO</h1>
@@ -321,9 +323,15 @@
 
         <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
 
+        <!-- (Opcional) Botão Sair -->
+        <button type="button" class="btn" id="btnSair" style="background:#1f2d3a;margin-top:10px">
+          Sair
+        </button>
+
         <div id="formEr" class="msg err"></div>
       </form>
 
+      <!-- Pedido Enviado -->
       <div class="sent" id="sentBox">
         <h2>Pedido enviado ✅</h2>
         <textarea id="resumoTxt" readonly></textarea>
@@ -340,6 +348,7 @@
   </div>
 
 <script>
+  // 👉 COLE A URL DO SEU WEBAPP AQUI
   const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw5Jo1q3KBDagx7U6gShJS5EKWO6BgoAJr7cPM_DljHwxU0EZQQW2fiik6sAMyG6n2h/exec";
 
   const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
@@ -366,11 +375,14 @@
   const btnCopiar = document.getElementById("btnCopiar");
   const copyOk = document.getElementById("copyOk");
 
+  const btnSair = document.getElementById("btnSair");
+
   function msg(el, text){ el.innerText = text; el.style.display = "block"; }
   function clearMsgs(){ [loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; }); }
 
   function saveSession(mat, pin){ sessionStorage.setItem("mat", mat); sessionStorage.setItem("pin", pin); }
   function getSession(){ return { mat: sessionStorage.getItem("mat") || "", pin: sessionStorage.getItem("pin") || "" }; }
+  function clearSession(){ sessionStorage.removeItem("mat"); sessionStorage.removeItem("pin"); }
 
   function hojeISO(){
     const d = new Date();
@@ -404,6 +416,46 @@
     return res.json();
   }
 
+  // ✅ CORREÇÃO PRINCIPAL:
+  // Estado inicial SEMPRE no login. Só mostra o formulário após auth OK.
+  (async function autoLogin(){
+    loginBox.style.display = "block";
+    formCard.style.display = "none";
+    sentBox.style.display = "none";
+
+    const sess = getSession();
+    if(!sess.mat || !sess.pin) return;
+
+    try{
+      const data = await auth(sess.mat, sess.pin);
+      if(data && data.ok){
+        funcionario.value = data.funcionario || "";
+        cr.value = data.cr || "";
+        fornecedor.value = data.fornecedor || "";
+
+        f.data.value = hojeISO();
+        calc();
+
+        loginBox.style.display = "none";
+        formCard.style.display = "block";
+        sentBox.style.display = "none";
+        return;
+      }
+
+      // se falhou, limpa sessão e fica no login
+      clearSession();
+      loginBox.style.display = "block";
+      formCard.style.display = "none";
+      sentBox.style.display = "none";
+
+    } catch(e){
+      // erro de rede: fica no login
+      loginBox.style.display = "block";
+      formCard.style.display = "none";
+      sentBox.style.display = "none";
+    }
+  })();
+
   btnEntrar.addEventListener("click", async () => {
     clearMsgs();
     const mat = String(loginMat.value||"").trim();
@@ -435,33 +487,18 @@
     }
   });
 
-  (async function autoLogin(){
-    const sess = getSession();
-    if(sess.mat && sess.pin){
-      try{
-        const data = await auth(sess.mat, sess.pin);
-        if(data.ok){
-          funcionario.value = data.funcionario || "";
-          cr.value = data.cr || "";
-          fornecedor.value = data.fornecedor || "";
-          f.data.value = hojeISO();
-          calc();
-          loginBox.style.display = "none";
-          formCard.style.display = "block";
-          return;
-        }
-      } catch(e){}
-    }
-    loginBox.style.display = "block";
-    formCard.style.display = "none";
-  })();
-
   f.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearMsgs();
 
     const sess = getSession();
-    if(!sess.mat || !sess.pin){ msg(formEr, "❌ Sessão expirada. Faça login novamente."); return; }
+    if(!sess.mat || !sess.pin){
+      msg(formEr, "❌ Sessão expirada. Faça login novamente.");
+      clearSession();
+      loginBox.style.display = "block";
+      formCard.style.display = "none";
+      return;
+    }
 
     const soma = Number(f.cafe_qtd.value||0)+Number(f.almoco_qtd.value||0)+Number(f.jantar_qtd.value||0)+Number(f.lanche_qtd.value||0);
     if(soma <= 0){ msg(formEr, "❌ Informe pelo menos 1 refeição (quantidade > 0)."); return; }
@@ -526,6 +563,12 @@
     f.obs.value = "";
     f.data.value = hojeISO();
     calc();
+  });
+
+  // Sair
+  btnSair.addEventListener("click", () => {
+    clearSession();
+    location.reload();
   });
 </script>
 
