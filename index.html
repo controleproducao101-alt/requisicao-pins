@@ -24,6 +24,7 @@
       padding:18px 10px;
     }
     .wrap{width: min(920px, 100%);}
+
     .card{
       border:2px solid var(--line);
       border-radius:14px;
@@ -43,6 +44,7 @@
       color:var(--blue);
       font-weight:800;
     }
+
     .section{padding:16px;}
     .grid-2{
       display:grid;
@@ -61,8 +63,16 @@
     }
     input[readonly]{background:#f2f7fc;color:#2b4c65}
     .divider{height:2px;background:var(--line);margin:14px 0}
+
+    /* Tabela responsiva: em telas pequenas, permite rolar */
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
     table{
       width:100%;
+      min-width:560px; /* garante estrutura, rola no celular */
       border-collapse:separate;
       border-spacing:0;
       margin-top:8px;
@@ -77,6 +87,7 @@
       font-size:16px;
       text-align:center;
       border-right:2px solid #ffffff22;
+      white-space:nowrap;
     }
     thead th:last-child{border-right:0}
     tbody td{
@@ -93,6 +104,7 @@
       color:var(--blue2);
       font-size:20px;
       padding-left:14px;
+      white-space:nowrap;
     }
     tbody td:last-child{border-right:0}
     .qty{
@@ -104,7 +116,8 @@
       border-radius:10px;
       font-size:16px;
     }
-    .money{font-weight:800;font-size:18px}
+    .money{font-weight:800;font-size:18px;white-space:nowrap}
+
     .total-row{
       display:flex;
       justify-content:flex-end;
@@ -121,6 +134,7 @@
       color:#111;
       font-size:22px;
     }
+
     .btn{
       width:100%;
       padding:16px 14px;
@@ -134,6 +148,7 @@
       margin-top:16px;
     }
     .btn:disabled{opacity:.6; cursor:not-allowed}
+
     .msg{margin-top:12px;padding:12px;border-radius:10px;display:none;font-weight:700}
     .ok{background:#e7f7ea;border:1px solid #bde5c5}
     .err{background:#fde8e8;border:1px solid #f5b5b5}
@@ -157,13 +172,24 @@
     }
     .btn-dark{background:#1f2d3a;color:#fff}
     .btn-blue{background:var(--blue);color:#fff}
+
+    /* Ajustes mobile */
+    @media (max-width: 720px){
+      body{padding:12px 8px}
+      .card-header h1{font-size:22px}
+      .grid-2{grid-template-columns: 1fr;}
+      .qty{width:100%;}
+      .total-row{font-size:18px}
+      .total-row span{font-size:18px}
+      .btn{font-size:18px}
+      tbody tr td:first-child{font-size:18px}
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
 
-    <!-- LOGIN -->
     <div class="login" id="loginBox">
       <h3>Acesso do Encarregado</h3>
 
@@ -180,12 +206,10 @@
 
       <button class="btn" id="btnEntrar" type="button" style="margin-top:14px">Entrar</button>
 
-      <div id="loginOk" class="msg ok"></div>
       <div id="loginEr" class="msg err"></div>
       <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado, CR e Fornecedor.</div>
     </div>
 
-    <!-- FORM -->
     <div class="card" id="formCard" style="display:none">
       <div class="card-header">
         <h1>REQUISIÇÃO DE ALIMENTAÇÃO</h1>
@@ -246,42 +270,44 @@
 
         <div class="divider"></div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Discriminação</th>
-              <th>Quant.</th>
-              <th>V. Unitário</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Café</td>
-              <td><input class="qty" type="number" min="0" name="cafe_qtd" value="0" onchange="calc()"></td>
-              <td class="money">R$ 5,50</td>
-              <td class="money" id="tcafe">R$ 0,00</td>
-            </tr>
-            <tr>
-              <td>Almoço</td>
-              <td><input class="qty" type="number" min="0" name="almoco_qtd" value="0" onchange="calc()"></td>
-              <td class="money">R$ 19,00</td>
-              <td class="money" id="talmoco">R$ 0,00</td>
-            </tr>
-            <tr>
-              <td>Jantar</td>
-              <td><input class="qty" type="number" min="0" name="jantar_qtd" value="0" onchange="calc()"></td>
-              <td class="money">R$ 19,00</td>
-              <td class="money" id="tjantar">R$ 0,00</td>
-            </tr>
-            <tr>
-              <td>Lanche</td>
-              <td><input class="qty" type="number" min="0" name="lanche_qtd" value="0" onchange="calc()"></td>
-              <td class="money">R$ 5,50</td>
-              <td class="money" id="tlanche">R$ 0,00</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Discriminação</th>
+                <th>Quant.</th>
+                <th>V. Unitário</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Café</td>
+                <td><input class="qty" type="number" min="0" name="cafe_qtd" value="0" onchange="calc()"></td>
+                <td class="money">R$ 5,50</td>
+                <td class="money" id="tcafe">R$ 0,00</td>
+              </tr>
+              <tr>
+                <td>Almoço</td>
+                <td><input class="qty" type="number" min="0" name="almoco_qtd" value="0" onchange="calc()"></td>
+                <td class="money">R$ 19,00</td>
+                <td class="money" id="talmoco">R$ 0,00</td>
+              </tr>
+              <tr>
+                <td>Jantar</td>
+                <td><input class="qty" type="number" min="0" name="jantar_qtd" value="0" onchange="calc()"></td>
+                <td class="money">R$ 19,00</td>
+                <td class="money" id="tjantar">R$ 0,00</td>
+              </tr>
+              <tr>
+                <td>Lanche</td>
+                <td><input class="qty" type="number" min="0" name="lanche_qtd" value="0" onchange="calc()"></td>
+                <td class="money">R$ 5,50</td>
+                <td class="money" id="tlanche">R$ 0,00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <div class="total-row">
           <div>TOTAL R$</div>
@@ -298,7 +324,6 @@
         <div id="formEr" class="msg err"></div>
       </form>
 
-      <!-- Pedido Enviado -->
       <div class="sent" id="sentBox">
         <h2>Pedido enviado ✅</h2>
         <textarea id="resumoTxt" readonly></textarea>
@@ -315,8 +340,7 @@
   </div>
 
 <script>
-  // ✅ AQUI É ONDE FICA O WEBAPP_URL
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxYjd3z7VKMR1Un7nnPTi2bTdPicVmNy--EvAGwRQkcpMyi3h8Y3TgnT0G7--cY5_Tw/exec";
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw5Jo1q3KBDagx7U6gShJS5EKWO6BgoAJr7cPM_DljHwxU0EZQQW2fiik6sAMyG6n2h/exec";
 
   const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
 
@@ -327,7 +351,6 @@
   const loginMat = document.getElementById("loginMat");
   const loginPin = document.getElementById("loginPin");
   const btnEntrar = document.getElementById("btnEntrar");
-  const loginOk = document.getElementById("loginOk");
   const loginEr = document.getElementById("loginEr");
 
   const f = document.getElementById("f");
@@ -343,21 +366,11 @@
   const btnCopiar = document.getElementById("btnCopiar");
   const copyOk = document.getElementById("copyOk");
 
-  function msg(el, text){
-    el.innerText = text;
-    el.style.display = "block";
-  }
-  function clearMsgs(){
-    [loginOk, loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; });
-  }
+  function msg(el, text){ el.innerText = text; el.style.display = "block"; }
+  function clearMsgs(){ [loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; }); }
 
-  function saveSession(mat, pin){
-    sessionStorage.setItem("mat", mat);
-    sessionStorage.setItem("pin", pin);
-  }
-  function getSession(){
-    return { mat: sessionStorage.getItem("mat") || "", pin: sessionStorage.getItem("pin") || "" };
-  }
+  function saveSession(mat, pin){ sessionStorage.setItem("mat", mat); sessionStorage.setItem("pin", pin); }
+  function getSession(){ return { mat: sessionStorage.getItem("mat") || "", pin: sessionStorage.getItem("pin") || "" }; }
 
   function hojeISO(){
     const d = new Date();
@@ -422,7 +435,6 @@
     }
   });
 
-  // auto login se já tiver sessão salva no tablet
   (async function autoLogin(){
     const sess = getSession();
     if(sess.mat && sess.pin){
@@ -491,11 +503,12 @@
     try{
       await navigator.clipboard.writeText(resumoTxt.value);
       msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
+      copyOk.className = "msg ok";
     } catch(e){
-      resumoTxt.focus();
-      resumoTxt.select();
+      resumoTxt.focus(); resumoTxt.select();
       document.execCommand("copy");
       msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
+      copyOk.className = "msg ok";
     }
   });
 
