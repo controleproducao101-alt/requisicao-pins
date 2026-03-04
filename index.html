@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Requisição de Alimentação</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:900px;margin:20px auto;padding:10px}
+    h2{text-align:center;color:#0b6fa4}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    label{font-weight:700;display:block;margin-top:10px}
+    input,select{width:100%;padding:10px;box-sizing:border-box}
+    input[readonly]{background:#f3f3f3}
+    table{width:100%;border-collapse:collapse;margin-top:16px}
+    th,td{border:1px solid #ccc;padding:8px;text-align:center}
+    th{background:#0b6fa4;color:#fff}
+    .total{margin-top:12px;font-size:18px;font-weight:700;text-align:right}
+    button{margin-top:16px;width:100%;padding:12px;background:#0b6fa4;color:#fff;border:0;font-size:16px;cursor:pointer}
+    .msg{margin-top:12px;padding:10px;display:none;border-radius:6px}
+    .ok{background:#e7f7ea;border:1px solid #bde5c5}
+    .err{background:#fde8e8;border:1px solid #f5b5b5}
+  </style>
+</head>
+<body>
+  <h2>REQUISIÇÃO DE ALIMENTAÇÃO</h2>
+
+  <form id="f">
+    <div class="grid">
+      <div>
+        <label>Data do Pedido</label>
+        <input type="date" name="data" required />
+      </div>
+      <div>
+        <label>Matrícula</label>
+        <input type="text" name="matricula" id="matricula" readonly />
+      </div>
+
+      <div>
+        <label>Encarregado</label>
+        <input type="text" name="funcionario" id="funcionario" readonly />
+      </div>
+      <div>
+        <label>CR</label>
+        <input type="text" name="cr" id="cr" readonly />
+      </div>
+
+      <div>
+        <label>Fornecedor</label>
+        <input type="text" name="fornecedor" id="fornecedor" readonly />
+      </div>
+
+      <div>
+        <label>Fazenda</label>
+        <select name="fazenda" required>
+          <option value="" selected disabled>Selecione...</option>
+          <option>SANTA LUCIA ||</option>
+          <option>TANGARA</option>
+          <option>SANTÍSSIMA TRINDADE</option>
+          <option>NOSSA SENHORA APARECIDA</option>
+          <option>TANGARÁ II</option>
+          <option>ÁGUA AMARELA</option>
+          <option>SÃO FRANCISCO</option>
+          <option>RONCA</option>
+          <option>SÃO SALVADOR I</option>
+          <option>SÃO MARTINHO</option>
+          <option>SANTA MARIA</option>
+          <option>SANTA LUCIA</option>
+          <option>NOVO CERRADO</option>
+          <option>SÃO SALVADOR II</option>
+          <option>ESTIVA</option>
+          <option>NOVA ERA</option>
+          <option>BREJO GRANDE</option>
+          <option>3R</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Entregar ao Portador</label>
+    <input type="text" name="portador" required />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Discriminação</th>
+          <th>Quant.</th>
+          <th>V. Unit.</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Café</td>
+          <td><input type="number" min="0" name="cafe_qtd" value="0" onchange="calc()" /></td>
+          <td>R$ 5,50</td>
+          <td id="tcafe">0,00</td>
+        </tr>
+        <tr>
+          <td>Almoço</td>
+          <td><input type="number" min="0" name="almoco_qtd" value="0" onchange="calc()" /></td>
+          <td>R$ 19,00</td>
+          <td id="talmoco">0,00</td>
+        </tr>
+        <tr>
+          <td>Jantar</td>
+          <td><input type="number" min="0" name="jantar_qtd" value="0" onchange="calc()" /></td>
+          <td>R$ 19,00</td>
+          <td id="tjantar">0,00</td>
+        </tr>
+        <tr>
+          <td>Lanche</td>
+          <td><input type="number" min="0" name="lanche_qtd" value="0" onchange="calc()" /></td>
+          <td>R$ 5,50</td>
+          <td id="tlanche">0,00</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total">TOTAL R$ <span id="tgeral">0,00</span></div>
+
+    <label>PIN (Senha)</label>
+    <input type="password" name="pin" required inputmode="numeric" />
+
+    <label>Observações</label>
+    <input type="text" name="obs" />
+
+    <button type="submit" id="btn">Enviar</button>
+
+    <div id="ok" class="msg ok">✅ Enviado com sucesso!</div>
+    <div id="er" class="msg err">❌ Erro ao enviar.</div>
+  </form>
+
+<script>
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxUeo8mzk6nHEhaVmTom4g0YNQw-CA10qNQLalZErd-E0IvJC8-6mbyqaHVxf1ZaBCM/exec";
+
+  const PRICES = { cafe: 5.50, almoco: 19.00, jantar: 19.00, lanche: 5.50 };
+
+  const f = document.getElementById("f");
+  const ok = document.getElementById("ok");
+  const er = document.getElementById("er");
+  const btn = document.getElementById("btn");
+
+  function show(el){ el.style.display = "block"; }
+  function hide(el){ el.style.display = "none"; }
+  function brl(n){ return (Number(n)||0).toFixed(2).replace(".", ","); }
+
+  function calc(){
+    const cafe = Number(f.cafe_qtd.value||0) * PRICES.cafe;
+    const almoco = Number(f.almoco_qtd.value||0) * PRICES.almoco;
+    const jantar = Number(f.jantar_qtd.value||0) * PRICES.jantar;
+    const lanche = Number(f.lanche_qtd.value||0) * PRICES.lanche;
+    const total = cafe + almoco + jantar + lanche;
+
+    document.getElementById("tcafe").innerText = brl(cafe);
+    document.getElementById("talmoco").innerText = brl(almoco);
+    document.getElementById("tjantar").innerText = brl(jantar);
+    document.getElementById("tlanche").innerText = brl(lanche);
+    document.getElementById("tgeral").innerText = brl(total);
+  }
+
+  async function carregarCadastro(){
+    const params = new URLSearchParams(location.search);
+    const mat = params.get("mat");
+    if(!mat){
+      show(er);
+      er.innerText = "❌ Falta a matrícula no link. Ex: ?mat=5042";
+      return;
+    }
+
+    const url = `${WEBAPP_URL}?action=cadastro&mat=${encodeURIComponent(mat)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if(!data.ok){
+      show(er);
+      er.innerText = "❌ " + (data.error || "Não foi possível carregar cadastro.");
+      return;
+    }
+
+    document.getElementById("matricula").value = data.matricula;
+    document.getElementById("funcionario").value = data.funcionario;
+    document.getElementById("cr").value = data.cr;
+    document.getElementById("fornecedor").value = data.fornecedor;
+
+    // Data default hoje
+    const hoje = new Date();
+    const yyyy = hoje.getFullYear();
+    const mm = String(hoje.getMonth()+1).padStart(2,"0");
+    const dd = String(hoje.getDate()).padStart(2,"0");
+    f.data.value = `${yyyy}-${mm}-${dd}`;
+
+    calc();
+  }
+
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hide(ok); hide(er);
+
+    btn.disabled = true;
+    btn.textContent = "Enviando...";
+
+    const payload = Object.fromEntries(new FormData(f).entries());
+    payload.user_agent = navigator.userAgent;
+
+    try{
+      const res = await fetch(WEBAPP_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if(res.ok && data.ok){
+        show(ok);
+        ok.innerText = `✅ Enviado! PedidoID: ${data.pedidoId}`;
+        // limpa só campos manuais/quantidades
+        f.fazenda.value = "";
+        f.portador.value = "";
+        f.cafe_qtd.value = 0;
+        f.almoco_qtd.value = 0;
+        f.jantar_qtd.value = 0;
+        f.lanche_qtd.value = 0;
+        f.pin.value = "";
+        f.obs.value = "";
+        calc();
+      } else {
+        show(er);
+        er.innerText = "❌ " + (data.error || "Falha ao enviar.");
+      }
+    } catch(err){
+      show(er);
+      er.innerText = "❌ Erro de conexão. Verifique internet e tente novamente.";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Enviar";
+    }
+  });
+
+  carregarCadastro();
+</script>
+</body>
+</html>
