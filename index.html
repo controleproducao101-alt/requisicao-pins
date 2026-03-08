@@ -107,7 +107,6 @@
     }
     tbody td:last-child{border-right:0}
 
-    /* Quantidade menor */
     .qty{
       width:78px;
       max-width:78px;
@@ -193,7 +192,6 @@
 <body>
   <div class="wrap">
 
-    <!-- LOGIN -->
     <div class="login" id="loginBox">
       <h3>Acesso do Encarregado</h3>
 
@@ -214,7 +212,6 @@
       <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado e Fornecedor. (CR será selecionado.)</div>
     </div>
 
-    <!-- FORM -->
     <div class="card" id="formCard" style="display:none">
       <div class="card-header">
         <h1>REQUISIÇÃO DE ALIMENTAÇÃO</h1>
@@ -258,7 +255,6 @@
             </select>
           </div>
 
-          <!-- ✅ CR AGORA É SELEÇÃO -->
           <div>
             <label>CR *</label>
             <select name="cr" required>
@@ -333,7 +329,6 @@
 
         <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
 
-        <!-- ✅ Recuperar último pedido (se perdeu o resumo) -->
         <button type="button" class="btn" id="btnRecuperar" style="background:#0b5f98;margin-top:10px">
           Recuperar último pedido
         </button>
@@ -345,7 +340,6 @@
         <div id="formEr" class="msg err"></div>
       </form>
 
-      <!-- Pedido Enviado -->
       <div class="sent" id="sentBox">
         <h2>Pedido enviado ✅</h2>
         <textarea id="resumoTxt" readonly></textarea>
@@ -362,7 +356,10 @@
   </div>
 
 <script>
+  // URL DO SEU APPS SCRIPT
   const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzwV8hTYr0MJuTiTptyoaeGICKPFRrxD-H7577OHUxmkfRG4GZ6AxEroE33Ro83nAr1/exec";
+  
+  // NOVOS PREÇOS ATUALIZADOS
   const PRICES = { cafe: 6.50, almoco: 20.50, jantar: 20.50, lanche: 6.50 };
 
   const loginBox = document.getElementById("loginBox");
@@ -506,7 +503,6 @@
       return;
     }
 
-    // valida CR selecionado
     const crSel = String(f.cr.value || "").trim();
     if(!crSel){
       msg(formEr, "❌ Selecione o CR.");
@@ -606,7 +602,7 @@
     f.style.display = "block";
 
     f.fazenda.value = "";
-    f.cr.value = "";            // ✅ limpa CR
+    f.cr.value = "";
     f.portador.value = "";
     f.cafe_qtd.value = 0;
     f.almoco_qtd.value = 0;
