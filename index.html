@@ -12,6 +12,8 @@
       --line:#cfe3f3;
       --bg:#f7fbff;
       --text:#0b2235;
+      --dark:#1f2d3a;
+      --green:#17a05d;
     }
     *{box-sizing:border-box}
     body{
@@ -23,14 +25,14 @@
       justify-content:center;
       padding:18px 10px;
     }
-    .wrap{width: min(920px, 100%);}
+    .wrap{width:min(920px,100%)}
 
     .card{
       border:2px solid var(--line);
       border-radius:14px;
       overflow:hidden;
       background:#fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+      box-shadow:0 2px 10px rgba(0,0,0,.04);
     }
     .card-header{
       padding:18px 16px;
@@ -48,9 +50,10 @@
     .section{padding:16px;}
     .grid-2{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns:1fr 1fr;
       gap:14px;
     }
+
     label{display:block;font-weight:700;margin-bottom:6px}
     input,select,textarea{
       width:100%;
@@ -61,7 +64,16 @@
       outline:none;
       background:#fff;
     }
-    input[readonly]{background:#f2f7fc;color:#2b4c65}
+    input[readonly]{
+      background:#f2f7fc;
+      color:#2b4c65;
+    }
+    select.locked{
+      background:#f2f7fc;
+      color:#2b4c65;
+      pointer-events:none;
+    }
+
     .divider{height:2px;background:var(--line);margin:14px 0}
 
     .table-wrap{
@@ -80,7 +92,7 @@
       overflow:hidden;
     }
     thead th{
-      background: var(--blue);
+      background:var(--blue);
       color:#fff;
       padding:12px 10px;
       font-size:16px;
@@ -141,16 +153,25 @@
       padding:16px 14px;
       border:none;
       border-radius:12px;
-      background: linear-gradient(180deg, #2f86c9, #1b6faa);
+      background:linear-gradient(180deg,#2f86c9,#1b6faa);
       color:#fff;
       font-size:20px;
       font-weight:900;
       cursor:pointer;
       margin-top:16px;
     }
-    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn-dark{background:var(--dark)}
+    .btn-mid{background:var(--blue2)}
+    .btn-green{background:linear-gradient(180deg,#20b76e,#149154)}
 
-    .msg{margin-top:12px;padding:12px;border-radius:10px;display:none;font-weight:700}
+    .msg{
+      margin-top:12px;
+      padding:12px;
+      border-radius:10px;
+      display:none;
+      font-weight:700;
+    }
     .ok{background:#e7f7ea;border:1px solid #bde5c5}
     .err{background:#fde8e8;border:1px solid #f5b5b5}
 
@@ -159,32 +180,192 @@
       padding:16px;
       border:2px solid var(--line);
       border-radius:14px;
-      background: var(--bg);
+      background:var(--bg);
     }
     .login h3{margin:0 0 10px;color:var(--blue2);font-size:18px}
     .small{font-size:12px;color:#5a6b79;margin-top:8px}
 
-    .sent{display:none;padding:16px}
-    .sent h2{margin:4px 0 10px;color:var(--blue2);font-size:22px}
-    .sent textarea{min-height:200px;white-space:pre-wrap}
-    .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-    .btn2{
-      padding:14px 12px;border-radius:12px;border:none;font-weight:900;font-size:16px;cursor:pointer
+    .sent{
+      display:none;
+      padding:16px;
+      background:#fff;
     }
-    .btn-dark{background:#1f2d3a;color:#fff}
-    .btn-blue{background:var(--blue);color:#fff}
-    .btn-mid{background:var(--blue2);color:#fff}
+    .sent-top{
+      background:#eaf8f0;
+      color:#0d7e49;
+      border:1px solid #b9e7ca;
+      padding:12px 14px;
+      border-radius:10px;
+      font-weight:800;
+      margin-bottom:14px;
+      text-align:center;
+      font-size:18px;
+    }
 
-    @media (max-width: 720px){
+    .jpg-wrap{
+      border:2px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      background:#f9fcff;
+    }
+    .jpg-wrap img{
+      width:100%;
+      display:block;
+      border-radius:12px;
+      border:1px solid #dceaf6;
+      background:#fff;
+    }
+
+    .btn-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+    .btn2{
+      padding:16px 12px;
+      border-radius:12px;
+      border:none;
+      font-weight:900;
+      font-size:20px;
+      cursor:pointer;
+      color:#fff;
+    }
+    .btn2-blue{background:linear-gradient(180deg,#2f86c9,#1b6faa)}
+    .btn2-dark{background:linear-gradient(180deg,#2f86c9,#1b6faa)}
+
+    .hidden-render{
+      position:fixed;
+      left:-99999px;
+      top:0;
+      width:900px;
+      background:#fff;
+      z-index:-1;
+    }
+
+    .jpg-card{
+      width:900px;
+      background:#fff;
+      border:2px solid #d8e6f3;
+      border-radius:18px;
+      overflow:hidden;
+      font-family:Arial, Helvetica, sans-serif;
+      color:#0b2235;
+    }
+    .jpg-head{
+      background:#ffffff;
+      padding:24px 26px 10px;
+      text-align:center;
+    }
+    .jpg-head h2{
+      margin:0;
+      color:#1f6fa8;
+      font-size:32px;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+    .jpg-body{
+      padding:10px 26px 24px;
+    }
+    .jpg-box{
+      border:2px solid #cfe3f3;
+      border-radius:14px;
+      overflow:hidden;
+    }
+    .jpg-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      border-top:1px solid #d8e6f3;
+    }
+    .jpg-row:first-child{border-top:none}
+    .jpg-cell{
+      padding:14px 16px;
+      border-right:1px solid #d8e6f3;
+    }
+    .jpg-cell:last-child{border-right:none}
+    .jpg-label{
+      font-size:15px;
+      font-weight:700;
+      color:#40627d;
+      margin-bottom:6px;
+    }
+    .jpg-value{
+      font-size:24px;
+      font-weight:800;
+      color:#0b2235;
+      word-break:break-word;
+    }
+    .jpg-span-2{
+      grid-column:1 / span 2;
+      border-right:none !important;
+    }
+
+    .jpg-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:18px;
+      overflow:hidden;
+      border-radius:12px;
+      border:2px solid #cfe3f3;
+    }
+    .jpg-table th{
+      background:#1f6fa8;
+      color:#fff;
+      font-size:20px;
+      padding:14px 10px;
+      text-align:center;
+    }
+    .jpg-table td{
+      padding:14px 12px;
+      font-size:28px;
+      border-top:1px solid #d8e6f3;
+      border-right:1px solid #d8e6f3;
+      text-align:center;
+      font-weight:700;
+    }
+    .jpg-table td:first-child{
+      text-align:left;
+      color:#0b5f98;
+      font-weight:900;
+      padding-left:18px;
+    }
+    .jpg-table td:last-child{border-right:none}
+
+    .jpg-total{
+      display:flex;
+      justify-content:flex-end;
+      gap:22px;
+      font-size:34px;
+      font-weight:900;
+      color:#0b5f98;
+      padding:18px 8px 0;
+    }
+    .jpg-total span{
+      color:#111;
+      min-width:180px;
+      text-align:right;
+    }
+
+    .jpg-obs{
+      margin-top:18px;
+      border:2px solid #cfe3f3;
+      border-radius:12px;
+      padding:16px;
+    }
+    .jpg-obs .jpg-label{font-size:20px}
+    .jpg-obs .jpg-value{font-size:24px;font-weight:700}
+
+    @media (max-width:720px){
       body{padding:12px 8px}
       .card-header h1{font-size:22px}
-      .grid-2{grid-template-columns: 1fr;}
-      .qty{width:64px; max-width:64px; padding:7px 6px; font-size:14px;}
+      .grid-2{grid-template-columns:1fr}
+      .qty{width:64px;max-width:64px;padding:7px 6px;font-size:14px}
       .total-row{font-size:18px}
       .total-row span{font-size:18px}
       .btn{font-size:18px}
       tbody tr td:first-child{font-size:18px}
-      .btn-row{grid-template-columns:1fr;}
+      .btn-row{grid-template-columns:1fr}
+      .btn2{font-size:18px}
     }
   </style>
 </head>
@@ -209,7 +390,7 @@
       <button class="btn" id="btnEntrar" type="button" style="margin-top:14px">Entrar</button>
 
       <div id="loginEr" class="msg err"></div>
-      <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado e Fornecedor. (CR será selecionado.)</div>
+      <div class="small">Após entrar, o sistema preenche automaticamente: Encarregado, Fornecedor e CR.</div>
     </div>
 
     <div class="card" id="formCard" style="display:none">
@@ -257,7 +438,7 @@
 
           <div>
             <label>CR *</label>
-            <select name="cr" required>
+            <select name="cr" id="crSelect" class="locked" required>
               <option value="" selected disabled>Selecione o CR...</option>
               <option>GN1010</option>
               <option>GN1011</option>
@@ -329,11 +510,11 @@
 
         <button class="btn" id="btnEnviar" type="submit">Enviar Requisição</button>
 
-        <button type="button" class="btn" id="btnRecuperar" style="background:#0b5f98;margin-top:10px">
+        <button type="button" class="btn btn-mid" id="btnRecuperar" style="margin-top:10px">
           Recuperar último pedido
         </button>
 
-        <button type="button" class="btn" id="btnSair" style="background:#1f2d3a;margin-top:10px">
+        <button type="button" class="btn btn-dark" id="btnSair" style="margin-top:10px">
           Sair
         </button>
 
@@ -341,283 +522,555 @@
       </form>
 
       <div class="sent" id="sentBox">
-        <h2>Pedido enviado ✅</h2>
-        <textarea id="resumoTxt" readonly></textarea>
+        <div class="sent-top">Pedido enviado ✅</div>
+
+        <div class="jpg-wrap">
+          <img id="jpgPreview" alt="Prévia da requisição em JPG">
+        </div>
 
         <div class="btn-row">
-          <button class="btn2 btn-blue" id="btnNovo" type="button">Novo Pedido</button>
-          <button class="btn2 btn-dark" id="btnCopiar" type="button">Copiar Pedido</button>
+          <button class="btn2 btn2-blue" id="btnNovo" type="button">Novo Pedido</button>
+          <button class="btn2 btn2-dark" id="btnCompartilhar" type="button">Compartilhar</button>
         </div>
 
         <div id="copyOk" class="msg ok" style="margin-top:10px"></div>
+        <div id="shareEr" class="msg err" style="margin-top:10px"></div>
       </div>
     </div>
-
   </div>
 
-<script>
-  // URL DO SEU APPS SCRIPT
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzwV8hTYr0MJuTiTptyoaeGICKPFRrxD-H7577OHUxmkfRG4GZ6AxEroE33Ro83nAr1/exec";
-  
-  // NOVOS PREÇOS ATUALIZADOS
-  const PRICES = { cafe: 6.50, almoco: 20.50, jantar: 20.50, lanche: 6.50 };
+  <!-- Área oculta usada para gerar o JPG -->
+  <div class="hidden-render">
+    <div class="jpg-card" id="jpgCard">
+      <div class="jpg-head">
+        <h2>REQUISIÇÃO DE ALIMENTAÇÃO</h2>
+      </div>
 
-  const loginBox = document.getElementById("loginBox");
-  const formCard = document.getElementById("formCard");
-  const sentBox = document.getElementById("sentBox");
+      <div class="jpg-body">
+        <div class="jpg-box">
+          <div class="jpg-row">
+            <div class="jpg-cell">
+              <div class="jpg-label">Número da Requisição</div>
+              <div class="jpg-value" id="jpgReqNumero">-</div>
+            </div>
+            <div class="jpg-cell">
+              <div class="jpg-label">Data</div>
+              <div class="jpg-value" id="jpgData">-</div>
+            </div>
+          </div>
 
-  const loginMat = document.getElementById("loginMat");
-  const loginPin = document.getElementById("loginPin");
-  const btnEntrar = document.getElementById("btnEntrar");
-  const loginEr = document.getElementById("loginEr");
+          <div class="jpg-row">
+            <div class="jpg-cell jpg-span-2">
+              <div class="jpg-label">Encarregado</div>
+              <div class="jpg-value" id="jpgFuncionario">-</div>
+            </div>
+          </div>
 
-  const f = document.getElementById("f");
-  const funcionario = document.getElementById("funcionario");
-  const fornecedor = document.getElementById("fornecedor");
+          <div class="jpg-row">
+            <div class="jpg-cell">
+              <div class="jpg-label">CR</div>
+              <div class="jpg-value" id="jpgCr">-</div>
+            </div>
+            <div class="jpg-cell">
+              <div class="jpg-label">Fornecedor</div>
+              <div class="jpg-value" id="jpgFornecedor">-</div>
+            </div>
+          </div>
 
-  const btnEnviar = document.getElementById("btnEnviar");
-  const formEr = document.getElementById("formEr");
+          <div class="jpg-row">
+            <div class="jpg-cell">
+              <div class="jpg-label">Fazenda</div>
+              <div class="jpg-value" id="jpgFazenda">-</div>
+            </div>
+            <div class="jpg-cell">
+              <div class="jpg-label">Portador</div>
+              <div class="jpg-value" id="jpgPortador">-</div>
+            </div>
+          </div>
+        </div>
 
-  const resumoTxt = document.getElementById("resumoTxt");
-  const btnNovo = document.getElementById("btnNovo");
-  const btnCopiar = document.getElementById("btnCopiar");
-  const copyOk = document.getElementById("copyOk");
+        <table class="jpg-table">
+          <thead>
+            <tr>
+              <th>Discriminação</th>
+              <th>Quant.</th>
+              <th>V. Unitário</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Café</td>
+              <td id="jpgCafeQtd">0</td>
+              <td>R$ 6,50</td>
+              <td id="jpgCafeTotal">R$ 0,00</td>
+            </tr>
+            <tr>
+              <td>Almoço</td>
+              <td id="jpgAlmocoQtd">0</td>
+              <td>R$ 20,50</td>
+              <td id="jpgAlmocoTotal">R$ 0,00</td>
+            </tr>
+            <tr>
+              <td>Jantar</td>
+              <td id="jpgJantarQtd">0</td>
+              <td>R$ 20,50</td>
+              <td id="jpgJantarTotal">R$ 0,00</td>
+            </tr>
+            <tr>
+              <td>Lanche</td>
+              <td id="jpgLancheQtd">0</td>
+              <td>R$ 6,50</td>
+              <td id="jpgLancheTotal">R$ 0,00</td>
+            </tr>
+          </tbody>
+        </table>
 
-  const btnSair = document.getElementById("btnSair");
-  const btnRecuperar = document.getElementById("btnRecuperar");
+        <div class="jpg-total">
+          <div>TOTAL R$</div>
+          <span id="jpgTotalGeral">0,00</span>
+        </div>
 
-  function msg(el, text){ el.innerText = text; el.style.display = "block"; }
-  function clearMsgs(){ [loginEr, formEr, copyOk].forEach(el => { el.style.display="none"; el.innerText=""; }); }
+        <div class="jpg-obs">
+          <div class="jpg-label">Observações</div>
+          <div class="jpg-value" id="jpgObs">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  function saveSession(mat, pin){ sessionStorage.setItem("mat", mat); sessionStorage.setItem("pin", pin); }
-  function getSession(){ return { mat: sessionStorage.getItem("mat") || "", pin: sessionStorage.getItem("pin") || "" }; }
-  function clearSession(){ sessionStorage.removeItem("mat"); sessionStorage.removeItem("pin"); }
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-  function hojeISO(){
-    const d = new Date();
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth()+1).padStart(2,"0");
-    const dd = String(d.getDate()).padStart(2,"0");
-    return `${yyyy}-${mm}-${dd}`;
-  }
-  function brl(n){ return (Number(n)||0).toFixed(2).replace(".", ","); }
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyMkdqeoZfSW-vuCKFPuLeQreLDtIq1DiZPMCLDuTQS152aIMUppvlK3-xTthtuxOA2/exec";
+    const PRICES = { cafe: 6.50, almoco: 20.50, jantar: 20.50, lanche: 6.50 };
 
-  window.calc = function(){
-    const cafe = Number(f.cafe_qtd.value||0) * PRICES.cafe;
-    const almoco = Number(f.almoco_qtd.value||0) * PRICES.almoco;
-    const jantar = Number(f.jantar_qtd.value||0) * PRICES.jantar;
-    const lanche = Number(f.lanche_qtd.value||0) * PRICES.lanche;
-    const total = cafe + almoco + jantar + lanche;
+    const loginBox = document.getElementById("loginBox");
+    const formCard = document.getElementById("formCard");
+    const sentBox = document.getElementById("sentBox");
 
-    document.getElementById("tcafe").innerText = "R$ " + brl(cafe);
-    document.getElementById("talmoco").innerText = "R$ " + brl(almoco);
-    document.getElementById("tjantar").innerText = "R$ " + brl(jantar);
-    document.getElementById("tlanche").innerText = "R$ " + brl(lanche);
-    document.getElementById("tgeral").innerText = brl(total);
-  };
+    const loginMat = document.getElementById("loginMat");
+    const loginPin = document.getElementById("loginPin");
+    const btnEntrar = document.getElementById("btnEntrar");
+    const loginEr = document.getElementById("loginEr");
 
-  async function auth(mat, pin){
-    const res = await fetch(WEBAPP_URL, {
-      method:"POST",
-      headers:{ "Content-Type":"text/plain;charset=utf-8" },
-      body: JSON.stringify({ action:"auth", matricula: mat, pin })
-    });
-    return res.json();
-  }
+    const f = document.getElementById("f");
+    const funcionario = document.getElementById("funcionario");
+    const fornecedor = document.getElementById("fornecedor");
+    const crSelect = document.getElementById("crSelect");
 
-  (async function autoLogin(){
-    loginBox.style.display = "block";
-    formCard.style.display = "none";
-    sentBox.style.display = "none";
+    const btnEnviar = document.getElementById("btnEnviar");
+    const formEr = document.getElementById("formEr");
 
-    const sess = getSession();
-    if(!sess.mat || !sess.pin) return;
+    const btnNovo = document.getElementById("btnNovo");
+    const btnCompartilhar = document.getElementById("btnCompartilhar");
+    const btnSair = document.getElementById("btnSair");
+    const btnRecuperar = document.getElementById("btnRecuperar");
 
-    try{
-      const data = await auth(sess.mat, sess.pin);
-      if(data && data.ok){
-        funcionario.value = data.funcionario || "";
-        fornecedor.value = data.fornecedor || "";
+    const jpgPreview = document.getElementById("jpgPreview");
+    const copyOk = document.getElementById("copyOk");
+    const shareEr = document.getElementById("shareEr");
 
-        f.data.value = hojeISO();
-        calc();
+    let currentJpgBlob = null;
+    let currentJpgFileName = "requisicao-alimentacao.jpg";
+    let currentResumoTexto = "";
+
+    function msg(el, text, cls){
+      el.className = "msg " + (cls || "");
+      el.innerText = text;
+      el.style.display = "block";
+    }
+
+    function clearMsgs(){
+      [loginEr, formEr, copyOk, shareEr].forEach(el => {
+        el.style.display = "none";
+        el.innerText = "";
+      });
+    }
+
+    function saveSession(data){
+      sessionStorage.setItem("mat", data.matricula || "");
+      sessionStorage.setItem("pin", data.pin || "");
+      sessionStorage.setItem("funcionario", data.funcionario || "");
+      sessionStorage.setItem("fornecedor", data.fornecedor || "");
+      sessionStorage.setItem("cr", data.cr || "");
+    }
+
+    function getSession(){
+      return {
+        mat: sessionStorage.getItem("mat") || "",
+        pin: sessionStorage.getItem("pin") || "",
+        funcionario: sessionStorage.getItem("funcionario") || "",
+        fornecedor: sessionStorage.getItem("fornecedor") || "",
+        cr: sessionStorage.getItem("cr") || ""
+      };
+    }
+
+    function clearSession(){
+      sessionStorage.removeItem("mat");
+      sessionStorage.removeItem("pin");
+      sessionStorage.removeItem("funcionario");
+      sessionStorage.removeItem("fornecedor");
+      sessionStorage.removeItem("cr");
+    }
+
+    function hojeISO(){
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function brl(n){
+      return (Number(n) || 0).toFixed(2).replace(".", ",");
+    }
+
+    function setCrLocked(cr){
+      crSelect.value = cr || "";
+      crSelect.classList.add("locked");
+    }
+
+    function applyLoggedUser(data){
+      funcionario.value = data.funcionario || "";
+      fornecedor.value = data.fornecedor || "";
+      setCrLocked(data.cr || "");
+      f.data.value = hojeISO();
+      calc();
+    }
+
+    window.calc = function(){
+      const cafe = Number(f.cafe_qtd.value || 0) * PRICES.cafe;
+      const almoco = Number(f.almoco_qtd.value || 0) * PRICES.almoco;
+      const jantar = Number(f.jantar_qtd.value || 0) * PRICES.jantar;
+      const lanche = Number(f.lanche_qtd.value || 0) * PRICES.lanche;
+      const total = cafe + almoco + jantar + lanche;
+
+      document.getElementById("tcafe").innerText = "R$ " + brl(cafe);
+      document.getElementById("talmoco").innerText = "R$ " + brl(almoco);
+      document.getElementById("tjantar").innerText = "R$ " + brl(jantar);
+      document.getElementById("tlanche").innerText = "R$ " + brl(lanche);
+      document.getElementById("tgeral").innerText = brl(total);
+    };
+
+    async function auth(mat, pin){
+      const res = await fetch(WEBAPP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "auth", matricula: mat, pin })
+      });
+      return res.json();
+    }
+
+    function fillJpgTemplate(data){
+      const cafe = Number(data.cafe || 0);
+      const almoco = Number(data.almoco || 0);
+      const jantar = Number(data.jantar || 0);
+      const lanche = Number(data.lanche || 0);
+
+      document.getElementById("jpgReqNumero").textContent = data.reqNumero || "-";
+      document.getElementById("jpgData").textContent = data.data || "-";
+      document.getElementById("jpgFuncionario").textContent = `${data.funcionario || "-"} (${getSession().mat || ""})`;
+      document.getElementById("jpgCr").textContent = data.cr || "-";
+      document.getElementById("jpgFornecedor").textContent = data.fornecedor || "-";
+      document.getElementById("jpgFazenda").textContent = data.fazenda || "-";
+      document.getElementById("jpgPortador").textContent = data.portador || "-";
+
+      document.getElementById("jpgCafeQtd").textContent = cafe;
+      document.getElementById("jpgAlmocoQtd").textContent = almoco;
+      document.getElementById("jpgJantarQtd").textContent = jantar;
+      document.getElementById("jpgLancheQtd").textContent = lanche;
+
+      document.getElementById("jpgCafeTotal").textContent = "R$ " + brl(cafe * PRICES.cafe);
+      document.getElementById("jpgAlmocoTotal").textContent = "R$ " + brl(almoco * PRICES.almoco);
+      document.getElementById("jpgJantarTotal").textContent = "R$ " + brl(jantar * PRICES.jantar);
+      document.getElementById("jpgLancheTotal").textContent = "R$ " + brl(lanche * PRICES.lanche);
+      document.getElementById("jpgTotalGeral").textContent = brl(data.total || 0);
+      document.getElementById("jpgObs").textContent = data.obs && String(data.obs).trim() ? data.obs : "-";
+    }
+
+    async function gerarJpgPedido(data){
+      fillJpgTemplate(data);
+
+      const card = document.getElementById("jpgCard");
+      const canvas = await html2canvas(card, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true
+      });
+
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
+      jpgPreview.src = dataUrl;
+      currentJpgFileName = `requisicao-${data.reqNumero || "pedido"}.jpg`;
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.95));
+      currentJpgBlob = blob;
+    }
+
+    function montarResumoTexto(data){
+      return `REQUISIÇÃO DE ALIMENTAÇÃO
+Nº: ${data.reqNumero}
+Encarregado: ${data.funcionario} (${getSession().mat})
+CR: ${data.cr}
+Fornecedor: ${data.fornecedor}
+Fazenda: ${data.fazenda}
+Portador: ${data.portador}
+Data: ${data.data}
+
+Quantidades:
+• Café: ${data.cafe}
+• Almoço: ${data.almoco}
+• Janta: ${data.jantar}
+• Lanche: ${data.lanche}
+
+Total: R$ ${brl(data.total)}
+${data.obs ? "Obs: " + data.obs : ""}`.trim();
+    }
+
+    async function abrirTelaSucesso(data){
+      currentResumoTexto = montarResumoTexto(data);
+
+      await gerarJpgPedido(data);
+
+      f.style.display = "none";
+      sentBox.style.display = "block";
+    }
+
+    (async function autoLogin(){
+      loginBox.style.display = "block";
+      formCard.style.display = "none";
+      sentBox.style.display = "none";
+
+      const sess = getSession();
+      if (!sess.mat || !sess.pin) return;
+
+      try{
+        const data = await auth(sess.mat, sess.pin);
+        if(data && data.ok){
+          data.pin = sess.pin;
+          saveSession({
+            matricula: sess.mat,
+            pin: sess.pin,
+            funcionario: data.funcionario,
+            fornecedor: data.fornecedor,
+            cr: data.cr
+          });
+
+          applyLoggedUser(data);
+
+          loginBox.style.display = "none";
+          formCard.style.display = "block";
+          sentBox.style.display = "none";
+          return;
+        }
+
+        clearSession();
+        loginBox.style.display = "block";
+        formCard.style.display = "none";
+        sentBox.style.display = "none";
+      } catch(e){
+        loginBox.style.display = "block";
+        formCard.style.display = "none";
+        sentBox.style.display = "none";
+      }
+    })();
+
+    btnEntrar.addEventListener("click", async () => {
+      clearMsgs();
+
+      const mat = String(loginMat.value || "").trim();
+      const pin = String(loginPin.value || "").trim();
+
+      if(!mat || !pin){
+        msg(loginEr, "❌ Informe matrícula e PIN.", "err");
+        return;
+      }
+
+      btnEntrar.disabled = true;
+      btnEntrar.textContent = "Entrando...";
+
+      try{
+        const data = await auth(mat, pin);
+
+        if(!data.ok){
+          msg(loginEr, "❌ " + (data.error || "Falha no login."), "err");
+          return;
+        }
+
+        saveSession({
+          matricula: mat,
+          pin,
+          funcionario: data.funcionario,
+          fornecedor: data.fornecedor,
+          cr: data.cr
+        });
+
+        applyLoggedUser(data);
 
         loginBox.style.display = "none";
         formCard.style.display = "block";
         sentBox.style.display = "none";
+      } finally {
+        btnEntrar.disabled = false;
+        btnEntrar.textContent = "Entrar";
+      }
+    });
+
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearMsgs();
+
+      const sess = getSession();
+
+      if(!sess.mat || !sess.pin){
+        msg(formEr, "❌ Sessão expirada. Faça login novamente.", "err");
+        clearSession();
+        loginBox.style.display = "block";
+        formCard.style.display = "none";
         return;
       }
 
-      clearSession();
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
+      const soma =
+        Number(f.cafe_qtd.value || 0) +
+        Number(f.almoco_qtd.value || 0) +
+        Number(f.jantar_qtd.value || 0) +
+        Number(f.lanche_qtd.value || 0);
+
+      if(soma <= 0){
+        msg(formEr, "❌ Informe pelo menos 1 refeição (quantidade > 0).", "err");
+        return;
+      }
+
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = "Enviando...";
+
+      const payload = Object.fromEntries(new FormData(f).entries());
+      payload.action = "pedido";
+      payload.matricula = sess.mat;
+      payload.pin = sess.pin;
+      payload.cr = sess.cr || crSelect.value || "";
+      payload.user_agent = navigator.userAgent;
+
+      try{
+        const res = await fetch(WEBAPP_URL, {
+          method: "POST",
+          headers: { "Content-Type":"text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if(res.ok && data.ok){
+          await abrirTelaSucesso(data);
+        } else {
+          msg(formEr, "❌ " + (data.error || "Falha ao enviar."), "err");
+        }
+      } catch(err){
+        msg(formEr, "❌ Erro de conexão. Verifique internet e tente novamente.", "err");
+      } finally {
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = "Enviar Requisição";
+      }
+    });
+
+    btnRecuperar.addEventListener("click", async () => {
+      clearMsgs();
+
+      const sess = getSession();
+      if(!sess.mat || !sess.pin){
+        msg(formEr, "❌ Sessão expirada. Faça login novamente.", "err");
+        clearSession();
+        loginBox.style.display = "block";
+        formCard.style.display = "none";
+        return;
+      }
+
+      btnRecuperar.disabled = true;
+      btnRecuperar.textContent = "Buscando...";
+
+      try{
+        const res = await fetch(WEBAPP_URL, {
+          method:"POST",
+          headers:{ "Content-Type":"text/plain;charset=utf-8" },
+          body: JSON.stringify({ action:"ultimo_pedido", matricula:sess.mat, pin:sess.pin })
+        });
+
+        const data = await res.json();
+
+        if(res.ok && data.ok){
+          await abrirTelaSucesso(data);
+        } else {
+          msg(formEr, "❌ " + (data.error || "Não foi possível recuperar."), "err");
+        }
+      } catch(e){
+        msg(formEr, "❌ Erro de conexão. Tente novamente.", "err");
+      } finally {
+        btnRecuperar.disabled = false;
+        btnRecuperar.textContent = "Recuperar último pedido";
+      }
+    });
+
+    btnCompartilhar.addEventListener("click", async () => {
+      clearMsgs();
+
+      try{
+        if (navigator.share && currentJpgBlob) {
+          const file = new File([currentJpgBlob], currentJpgFileName, { type: "image/jpeg" });
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: "Requisição de Alimentação",
+              text: currentResumoTexto,
+              files: [file]
+            });
+            return;
+          }
+        }
+
+        if (currentJpgBlob) {
+          const url = URL.createObjectURL(currentJpgBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = currentJpgFileName;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+          msg(copyOk, "✅ Seu aparelho não suportou o compartilhamento direto. A imagem foi baixada para você compartilhar manualmente.", "ok");
+          return;
+        }
+
+        msg(shareEr, "❌ Não foi possível compartilhar a imagem.", "err");
+      } catch (e) {
+        msg(shareEr, "❌ O compartilhamento foi cancelado ou não está disponível neste aparelho.", "err");
+      }
+    });
+
+    btnNovo.addEventListener("click", () => {
+      clearMsgs();
+
       sentBox.style.display = "none";
+      f.style.display = "block";
 
-    } catch(e){
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
-      sentBox.style.display = "none";
-    }
-  })();
-
-  btnEntrar.addEventListener("click", async () => {
-    clearMsgs();
-    const mat = String(loginMat.value||"").trim();
-    const pin = String(loginPin.value||"").trim();
-    if(!mat || !pin){ msg(loginEr, "❌ Informe matrícula e PIN."); return; }
-
-    btnEntrar.disabled = true;
-    btnEntrar.textContent = "Entrando...";
-
-    try{
-      const data = await auth(mat, pin);
-      if(!data.ok){ msg(loginEr, "❌ " + (data.error || "Falha no login.")); return; }
-
-      saveSession(mat, pin);
-
-      funcionario.value = data.funcionario || "";
-      fornecedor.value = data.fornecedor || "";
-
+      f.fazenda.value = "";
+      f.portador.value = "";
+      f.cafe_qtd.value = 0;
+      f.almoco_qtd.value = 0;
+      f.jantar_qtd.value = 0;
+      f.lanche_qtd.value = 0;
+      f.obs.value = "";
       f.data.value = hojeISO();
+
+      const sess = getSession();
+      funcionario.value = sess.funcionario || "";
+      fornecedor.value = sess.fornecedor || "";
+      setCrLocked(sess.cr || "");
+
       calc();
+    });
 
-      loginBox.style.display = "none";
-      formCard.style.display = "block";
-      sentBox.style.display = "none";
-    } finally {
-      btnEntrar.disabled = false;
-      btnEntrar.textContent = "Entrar";
-    }
-  });
-
-  f.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    clearMsgs();
-
-    const sess = getSession();
-    if(!sess.mat || !sess.pin){
-      msg(formEr, "❌ Sessão expirada. Faça login novamente.");
+    btnSair.addEventListener("click", () => {
       clearSession();
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
-      return;
-    }
-
-    const crSel = String(f.cr.value || "").trim();
-    if(!crSel){
-      msg(formEr, "❌ Selecione o CR.");
-      return;
-    }
-
-    const soma = Number(f.cafe_qtd.value||0)+Number(f.almoco_qtd.value||0)+Number(f.jantar_qtd.value||0)+Number(f.lanche_qtd.value||0);
-    if(soma <= 0){ msg(formEr, "❌ Informe pelo menos 1 refeição (quantidade > 0)."); return; }
-
-    btnEnviar.disabled = true;
-    btnEnviar.textContent = "Enviando...";
-
-    const payload = Object.fromEntries(new FormData(f).entries());
-    payload.action = "pedido";
-    payload.matricula = sess.mat;
-    payload.pin = sess.pin;
-    payload.user_agent = navigator.userAgent;
-
-    try{
-      const res = await fetch(WEBAPP_URL, {
-        method:"POST",
-        headers:{ "Content-Type":"text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-
-      if(res.ok && data.ok){
-        resumoTxt.value = data.resumo || "";
-        sentBox.style.display = "block";
-        f.style.display = "none";
-      } else {
-        msg(formEr, "❌ " + (data.error || "Falha ao enviar."));
-      }
-    } catch(err){
-      msg(formEr, "❌ Erro de conexão. Verifique internet e tente novamente.");
-    } finally {
-      btnEnviar.disabled = false;
-      btnEnviar.textContent = "Enviar Requisição";
-    }
-  });
-
-  btnRecuperar.addEventListener("click", async () => {
-    clearMsgs();
-
-    const sess = getSession();
-    if(!sess.mat || !sess.pin){
-      msg(formEr, "❌ Sessão expirada. Faça login novamente.");
-      clearSession();
-      loginBox.style.display = "block";
-      formCard.style.display = "none";
-      return;
-    }
-
-    btnRecuperar.disabled = true;
-    btnRecuperar.textContent = "Buscando...";
-
-    try{
-      const res = await fetch(WEBAPP_URL, {
-        method:"POST",
-        headers:{ "Content-Type":"text/plain;charset=utf-8" },
-        body: JSON.stringify({ action:"ultimo_pedido", matricula: sess.mat, pin: sess.pin })
-      });
-      const data = await res.json();
-
-      if(res.ok && data.ok){
-        resumoTxt.value = data.resumo || "";
-        sentBox.style.display = "block";
-        f.style.display = "none";
-      } else {
-        msg(formEr, "❌ " + (data.error || "Não foi possível recuperar."));
-      }
-    } catch(e){
-      msg(formEr, "❌ Erro de conexão. Tente novamente.");
-    } finally {
-      btnRecuperar.disabled = false;
-      btnRecuperar.textContent = "Recuperar último pedido";
-    }
-  });
-
-  btnCopiar.addEventListener("click", async () => {
-    clearMsgs();
-    try{
-      await navigator.clipboard.writeText(resumoTxt.value);
-      msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
-      copyOk.className = "msg ok";
-    } catch(e){
-      resumoTxt.focus(); resumoTxt.select();
-      document.execCommand("copy");
-      msg(copyOk, "✅ Pedido copiado! Agora é só colar no WhatsApp.");
-      copyOk.className = "msg ok";
-    }
-  });
-
-  btnNovo.addEventListener("click", () => {
-    clearMsgs();
-    sentBox.style.display = "none";
-    f.style.display = "block";
-
-    f.fazenda.value = "";
-    f.cr.value = "";
-    f.portador.value = "";
-    f.cafe_qtd.value = 0;
-    f.almoco_qtd.value = 0;
-    f.jantar_qtd.value = 0;
-    f.lanche_qtd.value = 0;
-    f.obs.value = "";
-    f.data.value = hojeISO();
-    calc();
-  });
-
-  btnSair.addEventListener("click", () => {
-    clearSession();
-    location.reload();
-  });
-</script>
-
+      location.reload();
+    });
+  </script>
 </body>
 </html>
