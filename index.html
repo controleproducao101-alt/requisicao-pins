@@ -7,30 +7,37 @@
 
   <style>
     :root{
-      --blue:#1f6fa8;
-      --blue2:#0b5f98;
-      --line:#cfe3f3;
+      --blue:#2a75af;
+      --blue2:#0c5f97;
+      --line:#c9dceb;
       --bg:#f7fbff;
-      --text:#0b2235;
+      --text:#0f2437;
       --dark:#1f2d3a;
-      --white:#ffffff;
+      --card:#ffffff;
     }
+
     *{box-sizing:border-box}
+
     html,body{
-      width:100%;
-      min-height:100%;
       margin:0;
       padding:0;
+      width:100%;
+      min-height:100%;
       font-family:Arial, Helvetica, sans-serif;
       background:#ffffff;
       color:var(--text);
     }
+
     body{
       display:flex;
       justify-content:center;
-      padding:clamp(10px,2vw,20px);
+      padding:clamp(8px,2vw,20px);
     }
-    .wrap{width:min(100%,980px)}
+
+    .wrap{
+      width:min(100%, 980px);
+    }
+
     .card{
       border:2px solid var(--line);
       border-radius:14px;
@@ -38,97 +45,113 @@
       background:#fff;
       box-shadow:0 2px 10px rgba(0,0,0,.04);
     }
+
     .card-header{
-      padding:clamp(14px,2vw,18px) 16px;
+      padding:18px 16px;
       text-align:center;
       border-bottom:2px solid var(--line);
     }
+
     .card-header h1{
       margin:0;
-      font-size:clamp(22px,2.5vw,30px);
       color:var(--blue);
-      font-weight:800;
+      font-weight:900;
+      letter-spacing:.5px;
+      font-size:clamp(22px,2.5vw,30px);
     }
-    .section{padding:clamp(12px,2vw,18px)}
+
+    .section{
+      padding:16px;
+    }
+
     .grid-2{
       display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-columns:1fr 1fr;
       gap:14px;
     }
+
     label{
       display:block;
       font-weight:700;
       margin-bottom:6px;
-      font-size:clamp(13px,1.2vw,15px);
+      font-size:14px;
     }
-    input,select{
+
+    input, select{
       width:100%;
-      padding:12px 12px;
+      padding:12px;
       border:2px solid var(--line);
       border-radius:10px;
-      font-size:clamp(14px,1.2vw,15px);
+      font-size:15px;
       outline:none;
       background:#fff;
     }
+
     input[readonly]{
       background:#f2f7fc;
       color:#2b4c65;
     }
+
     select.locked{
       background:#f2f7fc;
       color:#2b4c65;
       pointer-events:none;
     }
+
     .divider{
       height:2px;
       background:var(--line);
       margin:14px 0;
     }
+
     .table-wrap{
       width:100%;
       overflow-x:auto;
       -webkit-overflow-scrolling:touch;
-      border-radius:12px;
     }
+
     table{
       width:100%;
       min-width:560px;
       border-collapse:separate;
       border-spacing:0;
-      margin-top:8px;
       border:2px solid var(--line);
       border-radius:12px;
       overflow:hidden;
+      margin-top:8px;
       background:#fff;
     }
+
     thead th{
       background:var(--blue);
       color:#fff;
       padding:12px 10px;
-      font-size:clamp(14px,1.3vw,16px);
       text-align:center;
-      border-right:2px solid #ffffff22;
-      white-space:nowrap;
+      font-size:16px;
+      border-right:1px solid #ffffff33;
     }
-    thead th:last-child{border-right:0}
+
+    thead th:last-child{border-right:none;}
+
     tbody td{
       padding:10px;
-      border-top:2px solid var(--line);
-      border-right:2px solid var(--line);
+      border-top:1px solid var(--line);
+      border-right:1px solid var(--line);
       text-align:center;
-      background:#fff;
-      vertical-align:middle;
-      font-size:clamp(14px,1.25vw,16px);
+      font-size:16px;
+      font-weight:700;
     }
+
+    tbody td:last-child{border-right:none;}
+
     tbody tr td:first-child{
       text-align:left;
-      font-weight:800;
       color:var(--blue2);
-      font-size:clamp(17px,1.9vw,22px);
-      padding-left:14px;
+      font-weight:900;
+      font-size:18px;
       white-space:nowrap;
     }
-    tbody td:last-child{border-right:0}
+
     .qty{
       width:78px;
       max-width:78px;
@@ -136,31 +159,34 @@
       text-align:center;
       padding:8px 6px;
       border:2px solid var(--line);
-      border-radius:10px;
+      border-radius:8px;
       font-size:15px;
     }
+
     .money{
-      font-weight:800;
-      font-size:clamp(16px,1.5vw,18px);
       white-space:nowrap;
+      font-weight:900;
+      font-size:16px;
     }
+
     .total-row{
       display:flex;
       justify-content:flex-end;
       align-items:center;
-      gap:18px;
-      padding:14px 6px 0;
+      gap:16px;
+      padding:14px 4px 0;
+      font-size:22px;
       font-weight:900;
       color:var(--blue2);
-      font-size:clamp(18px,1.8vw,24px);
       flex-wrap:wrap;
     }
+
     .total-row span{
       min-width:110px;
       text-align:right;
       color:#111;
-      font-size:clamp(18px,1.8vw,24px);
     }
+
     .btn{
       width:100%;
       padding:16px 14px;
@@ -168,24 +194,31 @@
       border-radius:12px;
       background:linear-gradient(180deg,#2f86c9,#1b6faa);
       color:#fff;
-      font-size:clamp(17px,1.8vw,20px);
+      font-size:20px;
       font-weight:900;
       cursor:pointer;
       margin-top:16px;
     }
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    .btn-dark{background:var(--dark)}
-    .btn-mid{background:var(--blue2)}
+
+    .btn:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    .btn-dark{ background:var(--dark); }
+    .btn-mid{ background:var(--blue2); }
+
     .msg{
       margin-top:12px;
       padding:12px;
       border-radius:10px;
       display:none;
       font-weight:700;
-      font-size:clamp(13px,1.2vw,15px);
     }
-    .ok{background:#e7f7ea;border:1px solid #bde5c5}
-    .err{background:#fde8e8;border:1px solid #f5b5b5}
+
+    .ok{ background:#e7f7ea; border:1px solid #bde5c5; }
+    .err{ background:#fde8e8; border:1px solid #f5b5b5; }
+
     .login{
       margin-bottom:12px;
       padding:16px;
@@ -193,21 +226,25 @@
       border-radius:14px;
       background:var(--bg);
     }
+
     .login h3{
       margin:0 0 10px;
       color:var(--blue2);
-      font-size:clamp(17px,1.6vw,20px);
+      font-size:18px;
     }
+
     .small{
       font-size:12px;
       color:#5a6b79;
       margin-top:8px;
     }
+
     .sent{
       display:none;
-      padding:clamp(12px,2vw,18px);
+      padding:16px;
       background:#fff;
     }
+
     .sent-top{
       background:#eaf8f0;
       color:#0d7e49;
@@ -217,8 +254,9 @@
       font-weight:800;
       margin-bottom:14px;
       text-align:center;
-      font-size:clamp(17px,1.8vw,20px);
+      font-size:18px;
     }
+
     .jpg-wrap{
       border:2px solid var(--line);
       border-radius:14px;
@@ -226,26 +264,29 @@
       background:#f9fcff;
       overflow:hidden;
     }
+
     .jpg-wrap img{
       width:100%;
-      height:auto;
       display:block;
+      height:auto;
       border-radius:12px;
       border:1px solid #dceaf6;
       background:#fff;
     }
+
     .btn-row{
       display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-columns:1fr 1fr;
       gap:12px;
       margin-top:14px;
     }
+
     .btn2{
       padding:16px 12px;
       border-radius:12px;
       border:none;
       font-weight:900;
-      font-size:clamp(17px,1.7vw,20px);
+      font-size:20px;
       cursor:pointer;
       color:#fff;
       background:linear-gradient(180deg,#2f86c9,#1b6faa);
@@ -260,183 +301,186 @@
       z-index:-1;
     }
 
+    /* JPG */
     .jpg-card{
       width:1080px;
       background:#fff;
-      border:2px solid #d8e6f3;
-      border-radius:22px;
+      border:2px solid var(--line);
+      border-radius:18px;
       overflow:hidden;
       font-family:Arial, Helvetica, sans-serif;
-      color:#0b2235;
+      color:var(--text);
     }
 
-    .jpg-head{
-      background:#ffffff;
-      padding:26px 32px 12px;
+    .jpg-header{
+      padding:24px 24px 16px;
       text-align:center;
-      border-bottom:2px solid #d8e6f3;
+      border-bottom:2px solid var(--line);
     }
 
-    .jpg-head h2{
+    .jpg-header h2{
       margin:0;
-      color:#1f6fa8;
-      font-size:40px;
+      color:var(--blue);
+      font-size:52px;
       font-weight:900;
+      letter-spacing:.5px;
     }
 
-    .jpg-body{padding:22px 28px 28px}
+    .jpg-body{
+      padding:22px;
+    }
 
-    .jpg-req-highlight{
-      margin-bottom:18px;
-      border:3px solid #1f6fa8;
+    .jpg-info{
+      border:2px solid var(--line);
       border-radius:18px;
-      text-align:center;
-      padding:22px 18px;
-      background:linear-gradient(180deg,#f7fbff,#ffffff);
-    }
-
-    .jpg-req-highlight .req-label{
-      color:#0b5f98;
-      font-size:22px;
-      font-weight:800;
-      letter-spacing:.8px;
-      margin-bottom:8px;
-    }
-
-    .jpg-req-highlight .req-number{
-      color:#1f6fa8;
-      font-size:54px;
-      font-weight:900;
-      line-height:1;
-      word-break:break-word;
-    }
-
-    .jpg-box{
-      border:2px solid #cfe3f3;
-      border-radius:16px;
       overflow:hidden;
+      background:#fff;
     }
 
     .jpg-row{
       display:grid;
       grid-template-columns:1fr 1fr;
-      border-top:1px solid #d8e6f3;
+      border-top:1px solid var(--line);
     }
 
-    .jpg-row:first-child{border-top:none}
+    .jpg-row:first-child{
+      border-top:none;
+    }
+
+    .jpg-row.single{
+      grid-template-columns:1fr;
+    }
 
     .jpg-cell{
-      padding:16px 18px;
-      border-right:1px solid #d8e6f3;
+      padding:16px 18px 14px;
+      border-right:1px solid var(--line);
+      min-height:90px;
     }
 
-    .jpg-cell:last-child{border-right:none}
+    .jpg-cell:last-child{
+      border-right:none;
+    }
 
     .jpg-label{
-      font-size:18px;
+      font-size:26px;
+      color:#4d6980;
       font-weight:700;
-      color:#40627d;
       margin-bottom:6px;
+      line-height:1.1;
     }
 
     .jpg-value{
-      font-size:30px;
-      font-weight:800;
-      color:#0b2235;
+      font-size:28px;
+      font-weight:900;
+      color:#10283d;
+      line-height:1.15;
       word-break:break-word;
-      line-height:1.2;
+      text-transform:uppercase;
     }
 
-    .jpg-span-2{
-      grid-column:1 / span 2;
-      border-right:none !important;
+    .jpg-value.normalcase{
+      text-transform:none;
     }
 
     .jpg-table{
       width:100%;
-      border-collapse:collapse;
+      border-collapse:separate;
+      border-spacing:0;
       margin-top:20px;
+      border:2px solid var(--line);
       border-radius:14px;
       overflow:hidden;
-      border:2px solid #cfe3f3;
     }
 
     .jpg-table th{
-      background:#1f6fa8;
+      background:var(--blue);
       color:#fff;
-      font-size:24px;
-      padding:16px 12px;
+      padding:14px 12px;
+      font-size:22px;
       text-align:center;
+      border-right:1px solid #ffffff33;
+    }
+
+    .jpg-table th:last-child{
+      border-right:none;
     }
 
     .jpg-table td{
-      padding:16px 14px;
-      font-size:30px;
-      border-top:1px solid #d8e6f3;
-      border-right:1px solid #d8e6f3;
+      padding:16px 12px;
+      font-size:20px;
+      border-top:1px solid var(--line);
+      border-right:1px solid var(--line);
       text-align:center;
-      font-weight:700;
+      font-weight:900;
+      color:#10283d;
+    }
+
+    .jpg-table td:last-child{
+      border-right:none;
     }
 
     .jpg-table td:first-child{
       text-align:left;
-      color:#0b5f98;
+      color:var(--blue2);
       font-weight:900;
       padding-left:18px;
     }
 
-    .jpg-table td:last-child{border-right:none}
-
     .jpg-total{
       display:flex;
       justify-content:flex-end;
-      gap:22px;
-      font-size:38px;
-      font-weight:900;
-      color:#0b5f98;
-      padding:18px 8px 0;
+      align-items:center;
+      gap:26px;
+      padding:18px 6px 0;
       flex-wrap:wrap;
+      font-weight:900;
+      color:var(--blue2);
+      font-size:34px;
     }
 
     .jpg-total span{
       color:#111;
-      min-width:180px;
+      min-width:160px;
       text-align:right;
+      font-size:34px;
     }
 
     .jpg-obs{
       margin-top:18px;
-      border:2px solid #cfe3f3;
-      border-radius:12px;
-      padding:16px;
+      border:2px solid var(--line);
+      border-radius:14px;
+      padding:14px 16px 16px;
+      background:#fff;
     }
 
-    .jpg-obs .jpg-label{font-size:22px}
-    .jpg-obs .jpg-value{font-size:28px;font-weight:700}
+    .jpg-obs .jpg-label{
+      margin-bottom:6px;
+    }
+
+    .jpg-obs .jpg-value{
+      min-height:34px;
+    }
 
     @media (max-width:900px){
-      .grid-2{grid-template-columns:1fr}
-      .btn-row{grid-template-columns:1fr}
-      .qty{width:70px;max-width:70px}
+      .grid-2{ grid-template-columns:1fr; }
+      .btn-row{ grid-template-columns:1fr; }
+      .qty{ width:68px; max-width:68px; }
     }
 
     @media (max-width:640px){
-      body{padding:10px 8px}
-      .section{padding:12px}
-      table{min-width:520px}
-      .qty{
-        width:64px;
-        max-width:64px;
-        padding:7px 6px;
-        font-size:14px;
-      }
+      body{ padding:8px; }
+      .section{ padding:12px; }
+      table{ min-width:520px; }
+      .qty{ width:62px; max-width:62px; }
+      .btn{ font-size:18px; }
+      .btn2{ font-size:18px; }
       .total-row{
         justify-content:space-between;
-        gap:10px;
+        gap:8px;
       }
-      .total-row span{min-width:auto}
-      .btn{padding:15px 12px}
-      .card{border-radius:12px}
+      .total-row span{
+        min-width:auto;
+      }
     }
   </style>
 </head>
@@ -487,7 +531,7 @@
               <option>SANTA LUCIA ||</option>
               <option>TANGARA</option>
               <option>SANTÍSSIMA TRINDADE</option>
-              <option>N. SENHORA APARECIDA</option>
+              <option>NOSSA SENHORA APARECIDA</option>
               <option>TANGARÁ II</option>
               <option>ÁGUA AMARELA</option>
               <option>SÃO FRANCISCO</option>
@@ -610,30 +654,25 @@
 
   <div class="hidden-render">
     <div class="jpg-card" id="jpgCard">
-      <div class="jpg-head">
+      <div class="jpg-header">
         <h2>REQUISIÇÃO DE ALIMENTAÇÃO</h2>
       </div>
 
       <div class="jpg-body">
-        <div class="jpg-req-highlight">
-          <div class="req-label">NÚMERO DA REQUISIÇÃO</div>
-          <div class="req-number" id="jpgReqNumero">-</div>
-        </div>
-
-        <div class="jpg-box">
+        <div class="jpg-info">
           <div class="jpg-row">
             <div class="jpg-cell">
-              <div class="jpg-label">Data e Hora do Pedido</div>
-              <div class="jpg-value" id="jpgData">-</div>
+              <div class="jpg-label">Número da Requisição</div>
+              <div class="jpg-value normalcase" id="jpgReqNumero">-</div>
             </div>
             <div class="jpg-cell">
-              <div class="jpg-label">CR</div>
-              <div class="jpg-value" id="jpgCr">-</div>
+              <div class="jpg-label">Data</div>
+              <div class="jpg-value normalcase" id="jpgData">-</div>
             </div>
           </div>
 
-          <div class="jpg-row">
-            <div class="jpg-cell jpg-span-2">
+          <div class="jpg-row single">
+            <div class="jpg-cell">
               <div class="jpg-label">Encarregado</div>
               <div class="jpg-value" id="jpgFuncionario">-</div>
             </div>
@@ -641,19 +680,23 @@
 
           <div class="jpg-row">
             <div class="jpg-cell">
-              <div class="jpg-label">Fornecedor</div>
-              <div class="jpg-value" id="jpgFornecedor">-</div>
+              <div class="jpg-label">CR</div>
+              <div class="jpg-value" id="jpgCr">-</div>
             </div>
             <div class="jpg-cell">
-              <div class="jpg-label">Portador</div>
-              <div class="jpg-value" id="jpgPortador">-</div>
+              <div class="jpg-label">Fornecedor</div>
+              <div class="jpg-value" id="jpgFornecedor">-</div>
             </div>
           </div>
 
           <div class="jpg-row">
-            <div class="jpg-cell jpg-span-2">
+            <div class="jpg-cell">
               <div class="jpg-label">Fazenda</div>
               <div class="jpg-value" id="jpgFazenda">-</div>
+            </div>
+            <div class="jpg-cell">
+              <div class="jpg-label">Portador</div>
+              <div class="jpg-value" id="jpgPortador">-</div>
             </div>
           </div>
         </div>
@@ -702,7 +745,7 @@
 
         <div class="jpg-obs">
           <div class="jpg-label">Observações</div>
-          <div class="jpg-value" id="jpgObs">-</div>
+          <div class="jpg-value normalcase" id="jpgObs">-</div>
         </div>
       </div>
     </div>
@@ -785,7 +828,7 @@
     function hojeISO(){
       const d = new Date();
       const yyyy = d.getFullYear();
-      const mm = String(d.getMonth()+1).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
       const dd = String(d.getDate()).padStart(2, "0");
       return `${yyyy}-${mm}-${dd}`;
     }
@@ -1036,7 +1079,11 @@
         const res = await fetch(WEBAPP_URL, {
           method:"POST",
           headers:{ "Content-Type":"text/plain;charset=utf-8" },
-          body: JSON.stringify({ action:"ultimo_pedido", matricula:sess.mat, pin:sess.pin })
+          body: JSON.stringify({
+            action:"ultimo_pedido",
+            matricula:sess.mat,
+            pin:sess.pin
+          })
         });
 
         const data = await res.json();
@@ -1080,7 +1127,7 @@
           a.remove();
           setTimeout(() => URL.revokeObjectURL(url), 2000);
 
-          try {
+          try{
             await navigator.clipboard.writeText(currentReqNumeroTexto || "");
             msg(copyOk, "✅ A imagem foi baixada e o número da requisição foi copiado.", "ok");
           } catch (_) {
