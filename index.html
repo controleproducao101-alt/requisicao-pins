@@ -623,7 +623,7 @@
         <div class="jpg-box">
           <div class="jpg-row">
             <div class="jpg-cell">
-              <div class="jpg-label">Data</div>
+              <div class="jpg-label">Data e Hora do Pedido</div>
               <div class="jpg-value" id="jpgData">-</div>
             </div>
             <div class="jpg-cell">
@@ -741,6 +741,7 @@
 
     let currentJpgBlob = null;
     let currentJpgFileName = "requisicao-alimentacao.jpg";
+    let currentReqNumeroTexto = "";
 
     function msg(el, text, cls){
       el.className = "msg " + (cls || "");
@@ -835,6 +836,8 @@
       const jantar = Number(data.jantar || 0);
       const lanche = Number(data.lanche || 0);
       const matricula = data.matricula || getSession().mat || "";
+
+      currentReqNumeroTexto = `Nº da Requisição: ${data.reqNumero || "-"}`;
 
       document.getElementById("jpgReqNumero").textContent = data.reqNumero || "-";
       document.getElementById("jpgData").textContent = data.data || "-";
@@ -1060,6 +1063,7 @@
 
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
+              text: currentReqNumeroTexto || "Nº da Requisição",
               files: [file]
             });
             return;
@@ -1076,7 +1080,12 @@
           a.remove();
           setTimeout(() => URL.revokeObjectURL(url), 2000);
 
-          msg(copyOk, "✅ Seu aparelho não suportou o compartilhamento direto. A imagem foi baixada para você compartilhar manualmente.", "ok");
+          try {
+            await navigator.clipboard.writeText(currentReqNumeroTexto || "");
+            msg(copyOk, "✅ A imagem foi baixada e o número da requisição foi copiado.", "ok");
+          } catch (_) {
+            msg(copyOk, "✅ A imagem foi baixada para você compartilhar manualmente.", "ok");
+          }
           return;
         }
 
@@ -1108,6 +1117,7 @@
 
       jpgPreview.removeAttribute("src");
       currentJpgBlob = null;
+      currentReqNumeroTexto = "";
 
       calc();
     });
