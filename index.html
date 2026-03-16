@@ -13,6 +13,7 @@
       --bg:#f7fbff;
       --text:#0b2235;
       --dark:#1f2d3a;
+      --white:#ffffff;
     }
     *{box-sizing:border-box}
     html,body{
@@ -249,6 +250,7 @@
       color:#fff;
       background:linear-gradient(180deg,#2f86c9,#1b6faa);
     }
+
     .hidden-render{
       position:fixed;
       left:-99999px;
@@ -257,6 +259,7 @@
       background:#fff;
       z-index:-1;
     }
+
     .jpg-card{
       width:1080px;
       background:#fff;
@@ -266,41 +269,76 @@
       font-family:Arial, Helvetica, sans-serif;
       color:#0b2235;
     }
+
     .jpg-head{
       background:#ffffff;
-      padding:30px 32px 12px;
+      padding:26px 32px 12px;
       text-align:center;
       border-bottom:2px solid #d8e6f3;
     }
+
     .jpg-head h2{
       margin:0;
       color:#1f6fa8;
       font-size:40px;
       font-weight:900;
     }
+
     .jpg-body{padding:22px 28px 28px}
+
+    .jpg-req-highlight{
+      margin-bottom:18px;
+      border:3px solid #1f6fa8;
+      border-radius:18px;
+      text-align:center;
+      padding:22px 18px;
+      background:linear-gradient(180deg,#f7fbff,#ffffff);
+    }
+
+    .jpg-req-highlight .req-label{
+      color:#0b5f98;
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:.8px;
+      margin-bottom:8px;
+    }
+
+    .jpg-req-highlight .req-number{
+      color:#1f6fa8;
+      font-size:54px;
+      font-weight:900;
+      line-height:1;
+      word-break:break-word;
+    }
+
     .jpg-box{
       border:2px solid #cfe3f3;
       border-radius:16px;
       overflow:hidden;
     }
+
     .jpg-row{
       display:grid;
       grid-template-columns:1fr 1fr;
       border-top:1px solid #d8e6f3;
     }
+
     .jpg-row:first-child{border-top:none}
+
     .jpg-cell{
       padding:16px 18px;
       border-right:1px solid #d8e6f3;
     }
+
     .jpg-cell:last-child{border-right:none}
+
     .jpg-label{
       font-size:18px;
       font-weight:700;
       color:#40627d;
       margin-bottom:6px;
     }
+
     .jpg-value{
       font-size:30px;
       font-weight:800;
@@ -308,10 +346,12 @@
       word-break:break-word;
       line-height:1.2;
     }
+
     .jpg-span-2{
       grid-column:1 / span 2;
       border-right:none !important;
     }
+
     .jpg-table{
       width:100%;
       border-collapse:collapse;
@@ -320,6 +360,7 @@
       overflow:hidden;
       border:2px solid #cfe3f3;
     }
+
     .jpg-table th{
       background:#1f6fa8;
       color:#fff;
@@ -327,6 +368,7 @@
       padding:16px 12px;
       text-align:center;
     }
+
     .jpg-table td{
       padding:16px 14px;
       font-size:30px;
@@ -335,13 +377,16 @@
       text-align:center;
       font-weight:700;
     }
+
     .jpg-table td:first-child{
       text-align:left;
       color:#0b5f98;
       font-weight:900;
       padding-left:18px;
     }
+
     .jpg-table td:last-child{border-right:none}
+
     .jpg-total{
       display:flex;
       justify-content:flex-end;
@@ -352,17 +397,20 @@
       padding:18px 8px 0;
       flex-wrap:wrap;
     }
+
     .jpg-total span{
       color:#111;
       min-width:180px;
       text-align:right;
     }
+
     .jpg-obs{
       margin-top:18px;
       border:2px solid #cfe3f3;
       border-radius:12px;
       padding:16px;
     }
+
     .jpg-obs .jpg-label{font-size:22px}
     .jpg-obs .jpg-value{font-size:28px;font-weight:700}
 
@@ -371,6 +419,7 @@
       .btn-row{grid-template-columns:1fr}
       .qty{width:70px;max-width:70px}
     }
+
     @media (max-width:640px){
       body{padding:10px 8px}
       .section{padding:12px}
@@ -566,15 +615,20 @@
       </div>
 
       <div class="jpg-body">
+        <div class="jpg-req-highlight">
+          <div class="req-label">NÚMERO DA REQUISIÇÃO</div>
+          <div class="req-number" id="jpgReqNumero">-</div>
+        </div>
+
         <div class="jpg-box">
           <div class="jpg-row">
             <div class="jpg-cell">
-              <div class="jpg-label">Número da Requisição</div>
-              <div class="jpg-value" id="jpgReqNumero">-</div>
-            </div>
-            <div class="jpg-cell">
               <div class="jpg-label">Data</div>
               <div class="jpg-value" id="jpgData">-</div>
+            </div>
+            <div class="jpg-cell">
+              <div class="jpg-label">CR</div>
+              <div class="jpg-value" id="jpgCr">-</div>
             </div>
           </div>
 
@@ -587,23 +641,19 @@
 
           <div class="jpg-row">
             <div class="jpg-cell">
-              <div class="jpg-label">CR</div>
-              <div class="jpg-value" id="jpgCr">-</div>
-            </div>
-            <div class="jpg-cell">
               <div class="jpg-label">Fornecedor</div>
               <div class="jpg-value" id="jpgFornecedor">-</div>
-            </div>
-          </div>
-
-          <div class="jpg-row">
-            <div class="jpg-cell">
-              <div class="jpg-label">Fazenda</div>
-              <div class="jpg-value" id="jpgFazenda">-</div>
             </div>
             <div class="jpg-cell">
               <div class="jpg-label">Portador</div>
               <div class="jpg-value" id="jpgPortador">-</div>
+            </div>
+          </div>
+
+          <div class="jpg-row">
+            <div class="jpg-cell jpg-span-2">
+              <div class="jpg-label">Fazenda</div>
+              <div class="jpg-value" id="jpgFazenda">-</div>
             </div>
           </div>
         </div>
