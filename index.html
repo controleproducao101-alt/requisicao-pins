@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Requisição de Alimentação</title>
 
   <style>
@@ -13,19 +13,29 @@
       --bg:#f7fbff;
       --text:#0b2235;
       --dark:#1f2d3a;
-      --green:#17a05d;
     }
+
     *{box-sizing:border-box}
-    body{
+
+    html,body{
+      width:100%;
+      min-height:100%;
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
+      padding:0;
+      font-family:Arial, Helvetica, sans-serif;
       background:#ffffff;
       color:var(--text);
+    }
+
+    body{
       display:flex;
       justify-content:center;
-      padding:18px 10px;
+      padding:clamp(10px, 2vw, 20px);
     }
-    .wrap{width:min(920px,100%)}
+
+    .wrap{
+      width:min(100%, 980px);
+    }
 
     .card{
       border:2px solid var(--line);
@@ -34,53 +44,70 @@
       background:#fff;
       box-shadow:0 2px 10px rgba(0,0,0,.04);
     }
+
     .card-header{
-      padding:18px 16px;
+      padding:clamp(14px, 2vw, 18px) 16px;
       text-align:center;
       border-bottom:2px solid var(--line);
     }
+
     .card-header h1{
       margin:0;
-      font-size:28px;
+      font-size:clamp(22px, 2.5vw, 30px);
       letter-spacing:.5px;
       color:var(--blue);
       font-weight:800;
     }
 
-    .section{padding:16px;}
+    .section{padding:clamp(12px, 2vw, 18px);}
+
     .grid-2{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
       gap:14px;
     }
 
-    label{display:block;font-weight:700;margin-bottom:6px}
+    label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+      font-size:clamp(13px, 1.2vw, 15px);
+    }
+
     input,select,textarea{
       width:100%;
       padding:12px 12px;
       border:2px solid var(--line);
       border-radius:10px;
-      font-size:15px;
+      font-size:clamp(14px, 1.2vw, 15px);
       outline:none;
       background:#fff;
     }
+
     input[readonly]{
       background:#f2f7fc;
       color:#2b4c65;
     }
+
     select.locked{
       background:#f2f7fc;
       color:#2b4c65;
       pointer-events:none;
     }
 
-    .divider{height:2px;background:var(--line);margin:14px 0}
+    .divider{
+      height:2px;
+      background:var(--line);
+      margin:14px 0;
+    }
 
     .table-wrap{
       width:100%;
       overflow-x:auto;
       -webkit-overflow-scrolling:touch;
+      border-radius:12px;
     }
+
     table{
       width:100%;
       min-width:560px;
@@ -90,17 +117,21 @@
       border:2px solid var(--line);
       border-radius:12px;
       overflow:hidden;
+      background:#fff;
     }
+
     thead th{
       background:var(--blue);
       color:#fff;
       padding:12px 10px;
-      font-size:16px;
+      font-size:clamp(14px, 1.3vw, 16px);
       text-align:center;
       border-right:2px solid #ffffff22;
       white-space:nowrap;
     }
+
     thead th:last-child{border-right:0}
+
     tbody td{
       padding:10px;
       border-top:2px solid var(--line);
@@ -108,15 +139,18 @@
       text-align:center;
       background:#fff;
       vertical-align:middle;
+      font-size:clamp(14px, 1.25vw, 16px);
     }
+
     tbody tr td:first-child{
       text-align:left;
       font-weight:800;
       color:var(--blue2);
-      font-size:20px;
+      font-size:clamp(17px, 1.9vw, 22px);
       padding-left:14px;
       white-space:nowrap;
     }
+
     tbody td:last-child{border-right:0}
 
     .qty{
@@ -129,7 +163,12 @@
       border-radius:10px;
       font-size:15px;
     }
-    .money{font-weight:800;font-size:18px;white-space:nowrap}
+
+    .money{
+      font-weight:800;
+      font-size:clamp(16px, 1.5vw, 18px);
+      white-space:nowrap;
+    }
 
     .total-row{
       display:flex;
@@ -139,13 +178,15 @@
       padding:14px 6px 0;
       font-weight:900;
       color:var(--blue2);
-      font-size:22px;
+      font-size:clamp(18px, 1.8vw, 24px);
+      flex-wrap:wrap;
     }
+
     .total-row span{
       min-width:110px;
       text-align:right;
       color:#111;
-      font-size:22px;
+      font-size:clamp(18px, 1.8vw, 24px);
     }
 
     .btn{
@@ -155,15 +196,20 @@
       border-radius:12px;
       background:linear-gradient(180deg,#2f86c9,#1b6faa);
       color:#fff;
-      font-size:20px;
+      font-size:clamp(17px, 1.8vw, 20px);
       font-weight:900;
       cursor:pointer;
       margin-top:16px;
+      transition:.2s ease;
     }
-    .btn:disabled{opacity:.6;cursor:not-allowed}
+
+    .btn:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
     .btn-dark{background:var(--dark)}
     .btn-mid{background:var(--blue2)}
-    .btn-green{background:linear-gradient(180deg,#20b76e,#149154)}
 
     .msg{
       margin-top:12px;
@@ -171,7 +217,9 @@
       border-radius:10px;
       display:none;
       font-weight:700;
+      font-size:clamp(13px, 1.2vw, 15px);
     }
+
     .ok{background:#e7f7ea;border:1px solid #bde5c5}
     .err{background:#fde8e8;border:1px solid #f5b5b5}
 
@@ -182,14 +230,25 @@
       border-radius:14px;
       background:var(--bg);
     }
-    .login h3{margin:0 0 10px;color:var(--blue2);font-size:18px}
-    .small{font-size:12px;color:#5a6b79;margin-top:8px}
+
+    .login h3{
+      margin:0 0 10px;
+      color:var(--blue2);
+      font-size:clamp(17px, 1.6vw, 20px);
+    }
+
+    .small{
+      font-size:12px;
+      color:#5a6b79;
+      margin-top:8px;
+    }
 
     .sent{
       display:none;
-      padding:16px;
+      padding:clamp(12px, 2vw, 18px);
       background:#fff;
     }
+
     .sent-top{
       background:#eaf8f0;
       color:#0d7e49;
@@ -199,17 +258,20 @@
       font-weight:800;
       margin-bottom:14px;
       text-align:center;
-      font-size:18px;
+      font-size:clamp(17px, 1.8vw, 20px);
     }
 
     .jpg-wrap{
       border:2px solid var(--line);
       border-radius:14px;
-      padding:12px;
+      padding:10px;
       background:#f9fcff;
+      overflow:hidden;
     }
+
     .jpg-wrap img{
       width:100%;
+      height:auto;
       display:block;
       border-radius:12px;
       border:1px solid #dceaf6;
@@ -218,83 +280,96 @@
 
     .btn-row{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:12px;
       margin-top:14px;
     }
+
     .btn2{
       padding:16px 12px;
       border-radius:12px;
       border:none;
       font-weight:900;
-      font-size:20px;
+      font-size:clamp(17px, 1.7vw, 20px);
       cursor:pointer;
       color:#fff;
+      background:linear-gradient(180deg,#2f86c9,#1b6faa);
     }
-    .btn2-blue{background:linear-gradient(180deg,#2f86c9,#1b6faa)}
-    .btn2-dark{background:linear-gradient(180deg,#2f86c9,#1b6faa)}
 
     .hidden-render{
       position:fixed;
       left:-99999px;
       top:0;
-      width:900px;
+      width:1080px;
       background:#fff;
       z-index:-1;
     }
 
     .jpg-card{
-      width:900px;
+      width:1080px;
       background:#fff;
       border:2px solid #d8e6f3;
-      border-radius:18px;
+      border-radius:22px;
       overflow:hidden;
       font-family:Arial, Helvetica, sans-serif;
       color:#0b2235;
     }
+
     .jpg-head{
       background:#ffffff;
-      padding:24px 26px 10px;
+      padding:30px 32px 12px;
       text-align:center;
+      border-bottom:2px solid #d8e6f3;
     }
+
     .jpg-head h2{
       margin:0;
       color:#1f6fa8;
-      font-size:32px;
+      font-size:40px;
       font-weight:900;
       letter-spacing:.5px;
     }
+
     .jpg-body{
-      padding:10px 26px 24px;
+      padding:22px 28px 28px;
     }
+
     .jpg-box{
       border:2px solid #cfe3f3;
-      border-radius:14px;
+      border-radius:16px;
       overflow:hidden;
     }
+
     .jpg-row{
       display:grid;
       grid-template-columns:1fr 1fr;
       border-top:1px solid #d8e6f3;
     }
+
     .jpg-row:first-child{border-top:none}
+
     .jpg-cell{
-      padding:14px 16px;
+      padding:16px 18px;
       border-right:1px solid #d8e6f3;
     }
+
     .jpg-cell:last-child{border-right:none}
+
     .jpg-label{
-      font-size:15px;
+      font-size:18px;
       font-weight:700;
       color:#40627d;
       margin-bottom:6px;
     }
+
     .jpg-value{
-      font-size:24px;
+      font-size:30px;
       font-weight:800;
       color:#0b2235;
       word-break:break-word;
+      line-height:1.2;
     }
+
     .jpg-span-2{
       grid-column:1 / span 2;
       border-right:none !important;
@@ -303,43 +378,49 @@
     .jpg-table{
       width:100%;
       border-collapse:collapse;
-      margin-top:18px;
+      margin-top:20px;
+      border-radius:14px;
       overflow:hidden;
-      border-radius:12px;
       border:2px solid #cfe3f3;
     }
+
     .jpg-table th{
       background:#1f6fa8;
       color:#fff;
-      font-size:20px;
-      padding:14px 10px;
+      font-size:24px;
+      padding:16px 12px;
       text-align:center;
     }
+
     .jpg-table td{
-      padding:14px 12px;
-      font-size:28px;
+      padding:16px 14px;
+      font-size:30px;
       border-top:1px solid #d8e6f3;
       border-right:1px solid #d8e6f3;
       text-align:center;
       font-weight:700;
     }
+
     .jpg-table td:first-child{
       text-align:left;
       color:#0b5f98;
       font-weight:900;
       padding-left:18px;
     }
+
     .jpg-table td:last-child{border-right:none}
 
     .jpg-total{
       display:flex;
       justify-content:flex-end;
       gap:22px;
-      font-size:34px;
+      font-size:38px;
       font-weight:900;
       color:#0b5f98;
       padding:18px 8px 0;
+      flex-wrap:wrap;
     }
+
     .jpg-total span{
       color:#111;
       min-width:180px;
@@ -352,20 +433,67 @@
       border-radius:12px;
       padding:16px;
     }
-    .jpg-obs .jpg-label{font-size:20px}
-    .jpg-obs .jpg-value{font-size:24px;font-weight:700}
 
-    @media (max-width:720px){
-      body{padding:12px 8px}
-      .card-header h1{font-size:22px}
-      .grid-2{grid-template-columns:1fr}
-      .qty{width:64px;max-width:64px;padding:7px 6px;font-size:14px}
-      .total-row{font-size:18px}
-      .total-row span{font-size:18px}
-      .btn{font-size:18px}
-      tbody tr td:first-child{font-size:18px}
-      .btn-row{grid-template-columns:1fr}
-      .btn2{font-size:18px}
+    .jpg-obs .jpg-label{font-size:22px}
+    .jpg-obs .jpg-value{font-size:28px;font-weight:700}
+
+    @media (max-width: 900px){
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+
+      .btn-row{
+        grid-template-columns:1fr;
+      }
+
+      .qty{
+        width:70px;
+        max-width:70px;
+      }
+    }
+
+    @media (max-width: 640px){
+      body{
+        padding:10px 8px;
+      }
+
+      .section{
+        padding:12px;
+      }
+
+      table{
+        min-width:520px;
+      }
+
+      .qty{
+        width:64px;
+        max-width:64px;
+        padding:7px 6px;
+        font-size:14px;
+      }
+
+      .total-row{
+        justify-content:space-between;
+        gap:10px;
+      }
+
+      .total-row span{
+        min-width:auto;
+      }
+
+      .btn{
+        padding:15px 12px;
+      }
+
+      .card{
+        border-radius:12px;
+      }
+    }
+
+    @media (min-width: 1200px){
+      .wrap{
+        width:min(100%, 1060px);
+      }
     }
   </style>
 </head>
@@ -529,8 +657,8 @@
         </div>
 
         <div class="btn-row">
-          <button class="btn2 btn2-blue" id="btnNovo" type="button">Novo Pedido</button>
-          <button class="btn2 btn2-dark" id="btnCompartilhar" type="button">Compartilhar</button>
+          <button class="btn2" id="btnNovo" type="button">Novo Pedido</button>
+          <button class="btn2" id="btnCompartilhar" type="button">Compartilhar</button>
         </div>
 
         <div id="copyOk" class="msg ok" style="margin-top:10px"></div>
@@ -539,7 +667,6 @@
     </div>
   </div>
 
-  <!-- Área oculta usada para gerar o JPG -->
   <div class="hidden-render">
     <div class="jpg-card" id="jpgCard">
       <div class="jpg-head">
@@ -673,7 +800,6 @@
 
     let currentJpgBlob = null;
     let currentJpgFileName = "requisicao-alimentacao.jpg";
-    let currentResumoTexto = "";
 
     function msg(el, text, cls){
       el.className = "msg " + (cls || "");
@@ -717,8 +843,8 @@
     function hojeISO(){
       const d = new Date();
       const yyyy = d.getFullYear();
-      const mm = String(d.getMonth()+1).padStart(2,"0");
-      const dd = String(d.getDate()).padStart(2,"0");
+      const mm = String(d.getMonth()+1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
       return `${yyyy}-${mm}-${dd}`;
     }
 
@@ -755,9 +881,9 @@
 
     async function auth(mat, pin){
       const res = await fetch(WEBAPP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "auth", matricula: mat, pin })
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify({ action:"auth", matricula:mat, pin })
       });
       return res.json();
     }
@@ -767,10 +893,13 @@
       const almoco = Number(data.almoco || 0);
       const jantar = Number(data.jantar || 0);
       const lanche = Number(data.lanche || 0);
+      const matricula = data.matricula || getSession().mat || "";
 
       document.getElementById("jpgReqNumero").textContent = data.reqNumero || "-";
       document.getElementById("jpgData").textContent = data.data || "-";
-      document.getElementById("jpgFuncionario").textContent = `${data.funcionario || "-"} (${getSession().mat || ""})`;
+      document.getElementById("jpgFuncionario").textContent = matricula
+        ? `${data.funcionario || "-"} (${matricula})`
+        : (data.funcionario || "-");
       document.getElementById("jpgCr").textContent = data.cr || "-";
       document.getElementById("jpgFornecedor").textContent = data.fornecedor || "-";
       document.getElementById("jpgFazenda").textContent = data.fazenda || "-";
@@ -807,31 +936,8 @@
       currentJpgBlob = blob;
     }
 
-    function montarResumoTexto(data){
-      return `REQUISIÇÃO DE ALIMENTAÇÃO
-Nº: ${data.reqNumero}
-Encarregado: ${data.funcionario} (${getSession().mat})
-CR: ${data.cr}
-Fornecedor: ${data.fornecedor}
-Fazenda: ${data.fazenda}
-Portador: ${data.portador}
-Data: ${data.data}
-
-Quantidades:
-• Café: ${data.cafe}
-• Almoço: ${data.almoco}
-• Janta: ${data.jantar}
-• Lanche: ${data.lanche}
-
-Total: R$ ${brl(data.total)}
-${data.obs ? "Obs: " + data.obs : ""}`.trim();
-    }
-
     async function abrirTelaSucesso(data){
-      currentResumoTexto = montarResumoTexto(data);
-
       await gerarJpgPedido(data);
-
       f.style.display = "none";
       sentBox.style.display = "block";
     }
@@ -842,12 +948,11 @@ ${data.obs ? "Obs: " + data.obs : ""}`.trim();
       sentBox.style.display = "none";
 
       const sess = getSession();
-      if (!sess.mat || !sess.pin) return;
+      if(!sess.mat || !sess.pin) return;
 
       try{
         const data = await auth(sess.mat, sess.pin);
         if(data && data.ok){
-          data.pin = sess.pin;
           saveSession({
             matricula: sess.mat,
             pin: sess.pin,
@@ -865,14 +970,11 @@ ${data.obs ? "Obs: " + data.obs : ""}`.trim();
         }
 
         clearSession();
-        loginBox.style.display = "block";
-        formCard.style.display = "none";
-        sentBox.style.display = "none";
-      } catch(e){
-        loginBox.style.display = "block";
-        formCard.style.display = "none";
-        sentBox.style.display = "none";
-      }
+      } catch(e){}
+
+      loginBox.style.display = "block";
+      formCard.style.display = "none";
+      sentBox.style.display = "none";
     })();
 
     btnEntrar.addEventListener("click", async () => {
@@ -953,8 +1055,8 @@ ${data.obs ? "Obs: " + data.obs : ""}`.trim();
 
       try{
         const res = await fetch(WEBAPP_URL, {
-          method: "POST",
-          headers: { "Content-Type":"text/plain;charset=utf-8" },
+          method:"POST",
+          headers:{ "Content-Type":"text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
 
@@ -1020,7 +1122,6 @@ ${data.obs ? "Obs: " + data.obs : ""}`.trim();
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
               title: "Requisição de Alimentação",
-              text: currentResumoTexto,
               files: [file]
             });
             return;
@@ -1032,8 +1133,11 @@ ${data.obs ? "Obs: " + data.obs : ""}`.trim();
           const a = document.createElement("a");
           a.href = url;
           a.download = currentJpgFileName;
+          document.body.appendChild(a);
           a.click();
+          a.remove();
           setTimeout(() => URL.revokeObjectURL(url), 2000);
+
           msg(copyOk, "✅ Seu aparelho não suportou o compartilhamento direto. A imagem foi baixada para você compartilhar manualmente.", "ok");
           return;
         }
@@ -1063,6 +1167,9 @@ ${data.obs ? "Obs: " + data.obs : ""}`.trim();
       funcionario.value = sess.funcionario || "";
       fornecedor.value = sess.fornecedor || "";
       setCrLocked(sess.cr || "");
+
+      jpgPreview.removeAttribute("src");
+      currentJpgBlob = null;
 
       calc();
     });
