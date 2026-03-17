@@ -13,7 +13,6 @@
       --bg:#f7fbff;
       --text:#0f2437;
       --dark:#1f2d3a;
-      --card:#ffffff;
     }
 
     *{box-sizing:border-box}
@@ -530,7 +529,7 @@
               <option>SANTA LUCIA ||</option>
               <option>TANGARA</option>
               <option>SANTÍSSIMA TRINDADE</option>
-              <option>N. SENHORA APARECIDA</option>
+              <option>NOSSA SENHORA APARECIDA</option>
               <option>TANGARÁ II</option>
               <option>ÁGUA AMARELA</option>
               <option>SÃO FRANCISCO</option>
@@ -784,6 +783,8 @@
     let currentJpgBlob = null;
     let currentJpgFileName = "requisicao-alimentacao.jpg";
     let currentReqNumeroTexto = "";
+    let envioEmAndamento = false;
+    let ultimoRequestToken = "";
 
     function msg(el, text, cls){
       el.className = "msg " + (cls || "");
@@ -849,6 +850,10 @@
       calc();
     }
 
+    function gerarRequestToken() {
+      return "req_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+    }
+
     window.calc = function(){
       const cafe = Number(f.cafe_qtd.value || 0) * PRICES.cafe;
       const almoco = Number(f.almoco_qtd.value || 0) * PRICES.almoco;
@@ -865,8 +870,8 @@
 
     async function auth(mat, pin){
       const res = await fetch(WEBAPP_URL, {
-        method:"POST",
-        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        method: "POST",
+        headers: { "Content-Type":"text/plain;charset=utf-8" },
         body: JSON.stringify({ action:"auth", matricula:mat, pin })
       });
       return res.json();
@@ -955,7 +960,7 @@
         }
 
         clearSession();
-      } catch(e){}
+      } catch(_) {}
 
       loginBox.style.display = "block";
       formCard.style.display = "none";
@@ -1007,6 +1012,11 @@
       e.preventDefault();
       clearMsgs();
 
+      if (envioEmAndamento) {
+        msg(formEr, "❌ Aguarde. Seu pedido já está sendo enviado.", "err");
+        return;
+      }
+
       const sess = getSession();
       if(!sess.mat || !sess.pin){
         msg(formEr, "❌ Sessão expirada. Faça login novamente.", "err");
@@ -1027,8 +1037,11 @@
         return;
       }
 
+      envioEmAndamento = true;
       btnEnviar.disabled = true;
       btnEnviar.textContent = "Enviando...";
+
+      ultimoRequestToken = gerarRequestToken();
 
       const payload = Object.fromEntries(new FormData(f).entries());
       payload.action = "pedido";
@@ -1036,11 +1049,12 @@
       payload.pin = sess.pin;
       payload.cr = sess.cr || crSelect.value || "";
       payload.user_agent = navigator.userAgent;
+      payload.requestToken = ultimoRequestToken;
 
       try{
         const res = await fetch(WEBAPP_URL, {
-          method:"POST",
-          headers:{ "Content-Type":"text/plain;charset=utf-8" },
+          method: "POST",
+          headers: { "Content-Type":"text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
 
@@ -1051,9 +1065,10 @@
         } else {
           msg(formEr, "❌ " + (data.error || "Falha ao enviar."), "err");
         }
-      } catch(err){
+      } catch(_) {
         msg(formEr, "❌ Erro de conexão. Verifique internet e tente novamente.", "err");
       } finally {
+        envioEmAndamento = false;
         btnEnviar.disabled = false;
         btnEnviar.textContent = "Enviar Requisição";
       }
@@ -1076,8 +1091,8 @@
 
       try{
         const res = await fetch(WEBAPP_URL, {
-          method:"POST",
-          headers:{ "Content-Type":"text/plain;charset=utf-8" },
+          method: "POST",
+          headers: { "Content-Type":"text/plain;charset=utf-8" },
           body: JSON.stringify({
             action:"ultimo_pedido",
             matricula:sess.mat,
@@ -1092,7 +1107,7 @@
         } else {
           msg(formEr, "❌ " + (data.error || "Não foi possível recuperar."), "err");
         }
-      } catch(e){
+      } catch(_) {
         msg(formEr, "❌ Erro de conexão. Tente novamente.", "err");
       } finally {
         btnRecuperar.disabled = false;
@@ -1136,7 +1151,7 @@
         }
 
         msg(shareEr, "❌ Não foi possível compartilhar a imagem.", "err");
-      } catch (e) {
+      } catch (_) {
         msg(shareEr, "❌ O compartilhamento foi cancelado ou não está disponível neste aparelho.", "err");
       }
     });
@@ -1164,6 +1179,8 @@
       jpgPreview.removeAttribute("src");
       currentJpgBlob = null;
       currentReqNumeroTexto = "";
+      ultimoRequestToken = "";
+      envioEmAndamento = false;
 
       calc();
     });
